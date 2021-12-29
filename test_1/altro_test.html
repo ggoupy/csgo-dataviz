@@ -11,11 +11,19 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <h3>No vabbé</h3>
     <div id="test"></div>
-    <object id="#progress" type="image/svg+xml" data="gun-svgrepo-com.svg" width="300" height="300">
-        <img src="gun-svgrepo-com.svg"/>
-        <object>
+   <object id="#progress" type="image/svg+xml" data="sniper.svg" width="300" height="300">
+    <defs>
+        <linearGradient id="progress" x1="0" y1="1" x2="0" y2="0">
+          <stop id="stop1" offset="0" stop-color="blue"/>
+          <stop id="stop2" offset="0" stop-color="lightblue"/>
+        </linearGradient>
+      </defs>        
+
+          <img src="sniper.svg">
+
+        <object> 
     <!--<embed id="#progress" type="image/svg+xml" src="gun-svgrepo-com.svg"/>-->
- <!-- <svg id="#progress" width="400" height="400">
+  <!-- <svg id="#progress" width="400" height="400">
         <defs>
           <linearGradient id="progress" x1="0" y1="1" x2="0" y2="0">
             <stop id="stop1" offset="0" stop-color="blue"/>
@@ -37,8 +45,8 @@
         c19.674-2.387,32.875-25.299,39.295-39.65c6.822,5.768,11.043,13.23,11.043,21.281C324.316,243.372,304.102,258.31,280.176,258.31
         z"></path>
       
-      </svg> 
-    -->
+      </svg> -->
+    
   </body>
   <script>
       function setProgress(amt)
