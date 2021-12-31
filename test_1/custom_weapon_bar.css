@@ -1,15 +1,17 @@
 .progress {
    /* width:800px;
     height:100px;*/
+    background-color:rgb(241, 38, 2);
     border:1px solid black;
-    position:relative;
+    /*position:relative;*/
 }
-.progress:after {
+/*.progress:after {
     content:'\A';
     position:absolute;
     background-color:rgb(241, 38, 2);
     top:0; bottom:0;
     left:0; 
-    width:50%;
+    width: attr(data-percentage);
+    /* width:50%;*/
     z-index: -1;
-}
+} */
