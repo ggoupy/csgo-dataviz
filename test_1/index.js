@@ -8,20 +8,26 @@ var dataset;
     //}
     dataset = data;
 });*/
+
+function setBackground(){
+  console.log("mi han chiamato");
+  var svgImg= d3.select("#test").append("img")
+              .attr("src","128px-Gun_outline.png")
+              .attr("id","img_gun");
+
+  $("#test").width($('#img_gun').width());
+  $("#test").height($('#img_gun').height());
+};
 function changePercentage(){
-        //var bar = document.getElementById("test");
-        //$("#test").width("128px");
-        //$("#test").attr("data-percentage","128px");
-        //$("#test").attr("data-percentage","20%");
-        var width = $("#test").width();
+
+        var width = $('#img_gun').width();
+        var height = $('#img_gun').height();
         width *= 0.3;
         $("#test").width(width);
-        //$("#test").attr("qualcosa","no vabbe");
-        console.log("something");
+        $("#test").height(height);
+        
 }
-var svgImg= d3.select("#test").append("img")
-              .attr("src","128px-Gun_outline.png");
-  
+setBackground();
     
 var data = { percent: 5.0 };
 
