@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8" />
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+    .optionA {
+      background-color: #b3d9ff;
+    }
+    .optionB {
+      background-color: #ffb3b3;
+    }
+  </style>
+</head>
+
+<body>
+  <label for="selectGame">Game ID : </label>
+  <select id="selectGame"></select>
+  <br/><br/>
+  <label for="selectPseudo">Pseudo : </label>
+  <select id="selectPseudo"></select>
+  <br/>
+  <div id="bar-graph"></div>
+
+  <script>
+
+    const mainPlayer = "LaMasse"; //Hardcoded : player of our team we'll analyze performances
+    
+    // set the dimensions and margins of the graph
+    var margin = {top: 30, right: 30, bottom: 70, left: 60},
+        width = 860 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+    
+    // append the svg object to the body of the page
+    var svg = d3.select("#bar-graph")
+      .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform",
+              "translate(" + margin.left + "," + margin.top + ")");
+
+    // Parse the Data
+    d3.csv("out.csv").then(function(out) {
+      //Axis
+      var x = d3.scaleBand()
+        .range([ 0, width ])
+        .domain(out.map(function(d) { return d.Round_number; }))
+        .padding(0.4);
+      svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x))
+        .selectAll("text")
+          .attr("transform", "translate(-10,0)rotate(-45)")
+          .style("text-anchor", "end");
+      var y = d3.scaleLinear()
+        .domain([0, 500]) //500 is the max obtainable
+        .range([ height, 0]);
+      svg.append("g")
+        .attr("class", "y axis")
+        .call(d3.axisLeft(y));
+
+      //Legend
+      svg.append("circle").attr("cx",0).attr("cy", height + 30).attr("r", 6).style("fill", "#33cc33")
+      svg.append("circle").attr("cx",0).attr("cy",height + 50).attr("r", 6).style("fill", "#94b58a")
+      svg.append("text").attr("x", 10).attr("y", height + 35).text("Player damage").style("font-size", "15px").attr("alignment-baseline","middle")
+      svg.append("text").attr("x", 10).attr("y", height + 55).text("Mean team damage").style("font-size", "15px").attr("alignment-baseline","middle")
+
+      // Select game 
+      const games = [...new Set(out.map(d => parseInt(d.Game_number)))].sort(function(a, b) {return a-b;});
+      var select = document.getElementById("selectGame"); 
+      select.innerHTML = "";
+      for(var i = 0; i < games.length; i++) {
+        var opt = games[i];
+        select.innerHTML += "<option value=\"" + opt + "\">" + opt + "</option>";
+      }
+      let game = games[0];
+
+      function update_game(game) {
+        datag = out.filter(d => d.Game_number == game);
+        tmp = datag.filter(d => d.Round_number <= 4);
+        // Change pseudo in select
+        const pseudosA = [...new Set(tmp.filter(d => d.Team == "T").map(d => d.Pseudo))];
+        const pseudosB = [...new Set(tmp.filter(d => d.Team == "CT").map(d => d.Pseudo))];
+        var select = document.getElementById("selectPseudo"); 
+        select.innerHTML = "";
+        for(var i = 0; i < pseudosA.length; i++) {
+          var opt = pseudosA[i];
+          select.innerHTML += "<option class='optionA' value=\"" + opt + "\">" + opt + "</option>";
+        }
+        for(var i = 0; i < pseudosB.length; i++) {
+          var opt = pseudosB[i];
+          select.innerHTML += "<option class='optionB' value=\"" + opt + "\">" + opt + "</option>";
+        }
+        // Update X axis
+        // Tricky way to update round number labels
+        maxRound = d3.max(datag, function (d) {
+          return parseInt(d.Round_number);
+        });
+        svg.selectAll("g.x.axis")
+          .selectAll("text")
+          .attr("style", function (d) {
+            if (parseInt(d) <= maxRound)
+                return "text-anchor:end;display:block";
+            else
+                return "text-anchor:end;display:none";
+          });
+        pseudo = mainPlayer; //Default
+        update_pseudo(pseudo)
+      }
+      //Init call
+      update_game(game)
+
+      function update_pseudo(pseudo) {
+        $('#selectPseudo').val(pseudo); //In case func is not called by select event handler
+        data = datag.filter(d => d.Pseudo == pseudo);
+        d3.selectAll("rect").remove(); //Clear graph
+        // Bars
+        svg.selectAll("mybar")
+        .data(data)
+        .enter()
+        .append("rect")
+          .attr("x", function(d) { return x(d.Round_number); })
+          .attr("y", function(d) { return y(d.dmg); })
+          .attr("width", x.bandwidth()/2)
+          .attr("height", function(d) { return height - y(d.dmg); })
+          .attr("fill", "#33cc33")
+        svg.selectAll("mybar")
+        .data(data)
+        .enter()
+        .append("rect")
+          .attr("x", function(d) { return x(d.Round_number)+x.bandwidth()/2; })
+          .attr("y", function(d) { return y(d.damage_team/5); })
+          .attr("width", x.bandwidth()/2)
+          .attr("height", function(d) { return height - y(d.damage_team/5); })
+          .attr("fill", "#94b58a")
+      }
+
+      // Event handlers
+      document
+        .getElementById("selectPseudo")
+        .addEventListener("change", function select_update() {
+          var pseudo = document.getElementById("selectPseudo").value;
+          update_pseudo(pseudo)
+        });
+      document
+        .getElementById("selectGame")
+        .addEventListener("change", function select_update() {
+          var game = parseInt(document.getElementById("selectGame").value);
+          update_game(game)
+        });
+    });
+    </script>
+</body>
