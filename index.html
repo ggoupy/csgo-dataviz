@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html style="font-size: 16px;" lang="fr-FR">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <title>CSGO-dataviz</title>
+    <link rel="stylesheet" href="nicepage.css" media="screen">
+    <link rel="stylesheet" href="style.css" media="screen">
+    
+    <script class="u-script" type="text/javascript" src="nicepage.js" defer=""></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="icon" href="images/favicon1.png">
+    <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald:200,300,400,500,600,700|Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i">
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "Organization",
+            "name": "CSGO-dataviz"
+        }
+    </script>
+    <meta name="theme-color" content="#f41818">
+</head>
+
+
+<script>
+     $(document).ready(function() {
+         (function() {
+            var offsetHeight = document.body.offsetHeight;   
+            var screenHeight = screen.height;
+
+            if(offsetHeight < screenHeight){
+                document.getElementById("footer").style.position = "fixed";
+                document.getElementById("footer").style.bottom = "0";
+                document.getElementById("footer").style.left = "0";
+            }
+         })();
+
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        let item = "bar-chart";
+        if (urlParams.has('chart')) {
+            item = urlParams.get('chart');
+        }
+        var file = "vizualizations/" + item + '/' + item + '.html'
+        $("#viz-title").text(item.toUpperCase());
+        $("#viz").load(file);
+     });
+</script>
+
+
+<body class="u-body">
+
+    
+    <header class="u-clearfix u-header u-header" id="sec-0c7a">
+        <img class="u-expanded-width u-image u-image-1" src="images/hggh6-min.jpg" data-image-width="1620" data-image-height="1080">
+        <h1 class="u-text u-text-default u-text-white u-text-1">CSGO-dataviz</h1>
+        <p class="u-align-center u-custom-font u-font-georgia u-large-text u-text u-text-grey-5 u-text-variant u-text-2">Projet de M2 IA - Université Claude Bernard Lyon 1</p>
+        
+        <div class="u-layout-horizontal u-list u-list-1">
+        
+            <div class="u-repeater u-repeater-1">
+                <div class="u-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle">
+                    <div class="u-container-layout u-similar-container u-container-layout-1">
+                        <span class="u-file-icon u-icon u-icon-rectangle u-icon-1"><img src="images/624708.png" alt=""></span>
+                        <h4 class="u-text u-text-3"><a class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-palette-1-light-1 u-btn-1" href="?chart=bar-chart">BAR-CHART</a></h4>
+                    </div>
+                </div>
+
+                <div class="u-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle">
+                    <div class="u-container-layout u-similar-container u-container-layout-2">
+                        <span class="u-file-icon u-icon u-icon-rectangle u-icon-2"><img src="images/731584.png" alt=""></span>
+                        <h4 class="u-text u-text-3"><a class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-palette-1-light-1 u-btn-1" href="?chart=heatmap">HEATMAP</a></h4>
+                    </div>
+                </div>
+
+                <div class="u-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle">
+                    <div class="u-container-layout u-similar-container u-container-layout-3">
+                        <span class="u-file-icon u-icon u-icon-rectangle u-icon-3"><img src="images/556206.png" alt=""></span>
+                        <h4 class="u-text u-text-3"><a class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-palette-1-light-1 u-btn-1" href="?chart=weapon-chart">WEAPON-CHART</a></h4>
+                    </div>
+                </div>
+
+                <div class="u-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle">
+                    <div class="u-container-layout u-similar-container u-container-layout-4">
+                        <span class="u-file-icon u-icon u-icon-rectangle u-icon-4"><img src="images/834175.png" alt=""></span>
+                        <h4 class="u-text u-text-3"><a class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-palette-1-light-1 u-btn-1" href="?chart=pie-chart">PIE-CHART</a></h4>
+                    </div>
+                </div>
+            </div>
+        
+            <a class="u-absolute-vcenter u-gallery-nav u-gallery-nav-prev u-grey-70 u-icon-circle u-opacity u-opacity-70 u-spacing-10 u-text-white u-gallery-nav-1" href="#" role="button">
+            <span aria-hidden="true">
+            <svg viewBox="0 0 451.847 451.847"><path d="M97.141,225.92c0-8.095,3.091-16.192,9.259-22.366L300.689,9.27c12.359-12.359,32.397-12.359,44.751,0
+            c12.354,12.354,12.354,32.388,0,44.748L173.525,225.92l171.903,171.909c12.354,12.354,12.354,32.391,0,44.744
+            c-12.354,12.365-32.386,12.365-44.745,0l-194.29-194.281C100.226,242.115,97.141,234.018,97.141,225.92z"></path></svg>
+            </span>
+            <span class="sr-only">
+            <svg viewBox="0 0 451.847 451.847"><path d="M97.141,225.92c0-8.095,3.091-16.192,9.259-22.366L300.689,9.27c12.359-12.359,32.397-12.359,44.751,0
+            c12.354,12.354,12.354,32.388,0,44.748L173.525,225.92l171.903,171.909c12.354,12.354,12.354,32.391,0,44.744
+            c-12.354,12.365-32.386,12.365-44.745,0l-194.29-194.281C100.226,242.115,97.141,234.018,97.141,225.92z"></path></svg>
+            </span>
+            </a>
+            <a class="u-absolute-vcenter u-gallery-nav u-gallery-nav-next u-grey-70 u-icon-circle u-opacity u-opacity-70 u-spacing-10 u-text-white u-gallery-nav-2" href="#" role="button">
+            <span aria-hidden="true">
+            <svg viewBox="0 0 451.846 451.847"><path d="M345.441,248.292L151.154,442.573c-12.359,12.365-32.397,12.365-44.75,0c-12.354-12.354-12.354-32.391,0-44.744
+            L278.318,225.92L106.409,54.017c-12.354-12.359-12.354-32.394,0-44.748c12.354-12.359,32.391-12.359,44.75,0l194.287,194.284
+            c6.177,6.18,9.262,14.271,9.262,22.366C354.708,234.018,351.617,242.115,345.441,248.292z"></path></svg>
+            </span>
+            <span class="sr-only">
+            <svg viewBox="0 0 451.846 451.847"><path d="M345.441,248.292L151.154,442.573c-12.359,12.365-32.397,12.365-44.75,0c-12.354-12.354-12.354-32.391,0-44.744
+            L278.318,225.92L106.409,54.017c-12.354-12.359-12.354-32.394,0-44.748c12.354-12.359,32.391-12.359,44.75,0l194.287,194.284
+            c6.177,6.18,9.262,14.271,9.262,22.366C354.708,234.018,351.617,242.115,345.441,248.292z"></path></svg>
+            </span>
+            </a>
+        </div>
+    </header> 
+
+
+    <section class="u-align-center u-clearfix u-white u-section-1" src="" id="sec-e8fc">
+        <div class="u-clearfix u-sheet u-sheet-1">
+           <h3 class="u-text u-text-3" id="viz-title"></h3>
+            <div id="viz"></div>
+        </div>
+    </section>
+
+    
+    
+    <footer class="u-align-center u-clearfix u-footer u-grey-80" id="sec-c51f">
+        <p class="u-small-text u-align-center u-text u-text-variant u-text-1"> <a href="https://lyondataviz.github.io/teaching/lyon1-m2/2021/" rel="nofollow" class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-palette-1-light-1 u-btn-1">Data Vizualization</a>, 2021-2022.</p>
+    </footer>
+
+</body>
+
+</html>

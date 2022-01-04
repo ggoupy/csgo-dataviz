@@ -1,17 +1,12 @@
 <label for="selectGame">Game ID : </label>
-<select id="selectGame"></select>
 
-<br/><br/>
+<select id="selectGame"></select>
 
 <label for="selectPseudo">Player : </label>
 <select id="selectPseudo"></select>
 
-<br/><br/>
-
 <label for="selectPseudoCompare">Compare with : </label>
 <select id="selectPseudoCompare"></select>
-
-<br/><br/>
 
 <label for="selectProperty">Info : </label>
 <select id="selectProperty">
@@ -41,7 +36,7 @@
     // set the dimensions and margins of the graph
     var margin = {top: 30, right: 30, bottom: 70, left: 60},
         width = 1060 - margin.left - margin.right,
-        height = 650 - margin.top - margin.bottom;
+        height = 500 - margin.top - margin.bottom;
     
     // append the svg object to the body of the page
     var svg = d3.select("#bar-graph")
@@ -53,7 +48,7 @@
                 "translate(" + margin.left + "," + margin.top + ")");
 
     // Parse the Data
-    d3.csv("bar-chart/out.csv").then(function(out) {
+    d3.csv("vizualizations/bar-chart/out.csv").then(function(out) {
         //Axis
         var x = d3.scaleBand()
             .range([ 0, width ])
@@ -83,8 +78,8 @@
         //Legend
         svg.append("circle").attr("cx",0).attr("cy", height + 30).attr("r", 6).style("fill", barColor)
         svg.append("circle").attr("cx",0).attr("cy",height + 50).attr("r", 6).style("fill", bar2Color)
-        svg.append("text").attr("class", "legendPlayer").attr("x", 10).attr("y", height + 35).text("LaMasse info").style("font-size", "15px").attr("alignment-baseline","middle")
-        svg.append("text").attr("class", "legendCompared").attr("x", 10).attr("y", height + 55).text("Mean team info").style("font-size", "15px").attr("alignment-baseline","middle")
+        svg.append("text").attr("class", "legendPlayer").attr("x", 10).attr("y", height + 35).text("LaMasse Damage").style("font-size", "15px").attr("alignment-baseline","middle")
+        svg.append("text").attr("class", "legendCompared").attr("x", 10).attr("y", height + 55).text("Mean team Damage").style("font-size", "15px").attr("alignment-baseline","middle")
 
         // create tooltip element  
         const tooltip = d3.select("body")
@@ -164,8 +159,8 @@
         function update_pseudo(pseudo, compared=defaultCompared) {
             $('#selectPseudo').val(pseudo); //In case func is not called by select event handler
             //Update legend
-            svg.selectAll(".legendPlayer").text(document.getElementById("selectPseudo").selectedOptions[0].text + " info");
-            svg.selectAll(".legendCompared").text(document.getElementById("selectPseudoCompare").selectedOptions[0].text + " info");
+            svg.selectAll(".legendPlayer").text(document.getElementById("selectPseudo").selectedOptions[0].text + " " + document.getElementById("selectProperty").selectedOptions[0].text);
+            svg.selectAll(".legendCompared").text(document.getElementById("selectPseudoCompare").selectedOptions[0].text + " " + document.getElementById("selectProperty").selectedOptions[0].text);
             data = datag.filter(d => d.Pseudo == pseudo);
             d3.selectAll("rect").remove(); //Clear graph      
             // Player bars

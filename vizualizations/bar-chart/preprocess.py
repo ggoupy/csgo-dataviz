@@ -1,7 +1,7 @@
 import pandas as pd
 
-data = pd.read_csv('../../data/dataset/output.csv', sep=',') 
-dataRound = pd.read_csv('../../data/dataset/outputRound.csv', sep=',') 
+data = pd.read_csv('../../../data/dataset/output.csv', sep=',') 
+dataRound = pd.read_csv('../../../data/dataset/outputRound.csv', sep=',') 
 
 def filter_row(data, kv):
     data_new = data
