@@ -18,7 +18,7 @@ function addWeapons(){
       .append("img")
       .attr("src","weapons/"+item)
       .attr("id","weapon_"+index);
-    $("#bar"+index).width($("#weapon_"+index).width());
+    $("#bar_"+index).width($("#weapon_"+index).width());
     $("#bar_"+index).height($("#weapon_"+index).height());
     console.log($("#weapon_"+index).width());
   });
