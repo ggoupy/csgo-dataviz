@@ -1,0 +1,441 @@
+<p style="color:#4d4d4d;font-style:italic">
+Observer les diff&eacute;rents points d'int&eacute;r&ecirc;ts sur une map en fonction d'un crit&egrave;re donn&eacute;.
+</p>
+
+<div id="heatmap"></div>
+
+<div id="heatmap1">
+    <select id="typeEventSelect" onchange="">
+        <option value="1">Damage</option>
+        <option value="2">Damage received</option>
+        <option value="3">Kill</option>
+        <option value="4">Death</option>
+    </select>
+    <select id="typeGameSelect" onchange="">
+        <option value="1">All the games</option>
+        <option value="2">One game</option>
+        <option value="3">One round</option>
+    </select>
+    <select id="typePlayerSelect" onchange="">
+        <option value="1">player "LaMasse"</option>
+        <option value="2">Team T</option>
+        <option value="3">Team CT</option>
+        <option value="4">Everyone</option>
+    </select>
+    <br /><br />
+    <div id="GameNumberContainer" style="display:none">
+        <input
+        id="sliderGameNumber"
+        type="range"
+        value="0"
+        min="0"
+        max="19"
+        step="1"
+        />
+        <span id="GameNumber">Game Number</span>
+    </div>
+    <br />
+    <div id="RoundNumberContainer" style="display:none">
+        <input
+        id="sliderRoundNumber"
+        type="range"
+        value="1"
+        min="1"
+        max="15"
+        step="1"
+        />
+        <span id="RoundNumber">Round Number</span><br />
+    </div>
+
+</div>
+
+<div id="heatmap2">
+    <img src="./viz/heatmap/Nuke.png" id="imgs" style="display:none"></img>
+</div>
+
+
+<script>
+
+    //generer data au hasard
+    function geneDataHasard(width,height){
+        // now generate some random data
+        var points = [];
+        var max = 100;
+        var min = 0;
+        var len = 100;
+        var maxWeight = 100;
+    
+        while (len--) {
+            var val = Math.floor(Math.random() * maxWeight);
+            max = Math.max(max, val);
+            min = Math.min(min, val);
+            var point = {
+            x: Math.floor(Math.random() * width),
+            y: Math.floor(Math.random() * height),
+            value: val
+            };
+            points.push(point);
+            
+        }
+        return points;
+    }
+    //obtient valeur maximal et minimal
+    function getMax(points){
+        if(points.length==0)
+        return 0;
+        var max = points[0].value;
+        for(var i=0;i<points.length;i++){
+            if(max<points[i].value)
+                max = points[i].value;
+        }
+        return max;
+    }
+    function getMin(points){
+        if(points.length==0)
+        return 0;
+        var min = points[0].value;
+        for(var i=0;i<points.length;i++){
+            if(min>points[i].value)
+            min = points[i].value;
+        }
+        return min;
+    }
+    //draw heatmap
+    function genereHeatmap(points){
+      var radius = 20;
+      var width = 1000*0.8;
+      var height = 1000*0.8;
+    
+      var canvas = d3
+        .select("#heatmap")
+        .append("canvas")
+        .attr("width", width)
+        .attr("height", height);
+    
+      var context = canvas.node().getContext("2d");
+    
+      var max = getMax(points);
+      var min = getMin(points);
+      
+      //draw each circle
+      points.forEach((d) => {
+        context.beginPath();
+        context.arc(d.x, d.y, radius, 0, 2 * Math.PI);
+        context.fillStyle = "red";
+        let radialGradient = context.createRadialGradient(
+          d.x,
+          d.y,
+          0,
+          d.x,
+          d.y,
+          radius
+        );
+        radialGradient.addColorStop(0, "rgba(0,0,0,1)");
+        radialGradient.addColorStop(1, "rgba(0,0,0,0)");
+        context.fillStyle = radialGradient;
+        
+        let globalAlpha = (d.value - min) / (max - min)
+        context.globalAlpha = Math.max(Math.min(globalAlpha, 1), 0)
+         
+        context.fill();
+        context.closePath();
+      });
+      context.globalAlpha=0.7;
+    
+      //creer a line of color 256*1
+      function getColorPaint() {
+        var w = 256;
+        var h = 1;
+    
+        var paletteCanvas = d3
+          .select("#heatmap1")
+          .append("canvas")
+          .attr("width", w)
+          .attr("height", h);
+    
+        var ctx = paletteCanvas.node().getContext("2d");
+    
+        //define color
+        let gradientConfig = {
+          "0.0": "#6E32C2",
+          "0.1": "#1890FF",
+          "0.2": "#12CCCC",
+          "0.3": "#80FF73",
+          "0.4": "#FAFFA8",
+          "0.5": "#FFC838",
+          "0.6": "#FF8C12",
+          "0.7": "#FA541C",
+          "1.0": "#F51D27"
+        };
+        //creer un bound pixcel 256*1
+        let linearGradient = ctx.createLinearGradient(0, 0, w, h);
+        for (let key in gradientConfig) {
+          linearGradient.addColorStop(key, gradientConfig[key]);
+        }
+        ctx.fillStyle = linearGradient;
+        ctx.fillRect(0, 0, w, h);
+        return ctx.getImageData(0, 0, width, height).data;
+      }
+    
+      
+      let palette = getColorPaint();
+    
+      let pointImg = context.getImageData(0, 0, width, height);
+      let pointImgData = pointImg.data;
+    
+        
+        for (var i = 3; i < pointImgData.length; i += 4) {
+            let alpha = pointImgData[i];
+            let offset = alpha * 4;
+            pointImgData[i - 3] = palette[offset];
+            pointImgData[i - 2] = palette[offset + 1];
+            pointImgData[i - 1] = palette[offset + 2];
+        }
+        pointImg.data = pointImgData;
+        
+        context.putImageData(pointImg, 0, 0);
+        var bgImg = new Image();
+        bgImg= document.getElementById("imgs");
+        context.drawImage(bgImg, 0, 0, width, height);
+    }
+    
+
+
+var nomJoueur = "LaMasse";
+
+//creer hash map pour stocker
+var d=d3.csv("viz/heatmap/positionsAlt.csv").then(d=>{
+    
+
+    function update(d){
+        //effacer la carte d'abord
+        var canvas = d3
+        .select("#heatmap")
+        .selectAll("canvas")
+        .remove();
+
+        canvas = d3
+        .select("#heatmap1")
+        .selectAll("canvas")
+        .remove();
+
+
+        var typeEventSelect = d3.select("#typeEventSelect").property("value");
+        var typeGameSelect = d3.select("#typeGameSelect").property("value");
+        var typePlayerSelect = d3.select("#typePlayerSelect").property("value");
+        var roundNumberSelect = d3.select("#sliderRoundNumber").property("value");
+        var GameNumberSelect = d3.select("#sliderGameNumber").property("value");
+        //console.log(typeEventSelect," ",typeGameSelect," ",typePlayerSelect," ",roundNumberSelect," ",GameNumberSelect);
+
+        if(typeEventSelect==1){
+            typeEventSelect = "DamageReceived_origin";
+        }else if(typeEventSelect==2){
+            typeEventSelect = "DamageReceived_target";
+        }else if(typeEventSelect==3){
+            typeEventSelect = "Kill";
+        }else{
+            typeEventSelect = "Death";
+        }
+
+        //typeGameSelect
+        //"1" all the game
+        //"2" in one game
+        //"3" in a round
+
+        //typePlayerSelect
+        //1 player "LaMass"
+        //2 tame T
+        //3 tame CT
+        //4 everone
+
+        tab = new Map();
+
+        function ajouterElementDansMap(itemD,tab){
+            let x=parseFloat(itemD["X"]);
+            let y=parseFloat(itemD["Y"]);
+            //x=x+2411.96;
+            //y=y+2479.4;
+            //x=Math.floor(915-x/7.1+90);
+            //y=Math.floor(487-y/7.1+220);
+            x=x+2911.96;
+            y=y+2479.4;
+            x=Math.floor((x/8+120)*0.8);
+            y=Math.floor((487-y/8+255)*0.8);
+            let key = x.toString()+","+y.toString();
+            if(tab.has(key)){
+                tab.set(key,tab.get(key)+1);
+            }else{
+                tab.set(key,0);
+            }
+            return tab;
+        }
+
+        //"1" pour tous les jeus
+        document.getElementById("GameNumberContainer").style.display = "none";
+        document.getElementById("RoundNumberContainer").style.display = "none";
+        if(typeGameSelect==1){
+            if(typePlayerSelect==1){
+                // pour joueur LaMass
+                    for(var i = 0;i<d.length;i++){
+                        if( d[i]["Pseudo"]=="LaMasse" && d[i]["Type"]==typeEventSelect ){
+                            tab = ajouterElementDansMap(d[i],tab);
+                        }
+                    }
+            }else if(typePlayerSelect==2){
+                //pour equipe T
+                for(var i = 0;i<d.length;i++){
+                        if(d[i]["Team"]=="T" && d[i]["Type"]==typeEventSelect ){
+                            tab = ajouterElementDansMap(d[i],tab);
+                        }
+                }
+            }else if(typePlayerSelect==3){
+                //pour equipe CT
+                for(var i = 0;i<d.length;i++){
+                        if(d[i]["Team"]=="CT" && d[i]["Type"]==typeEventSelect ){
+                            tab = ajouterElementDansMap(d[i],tab);
+                        }
+                }
+            }else if(typePlayerSelect==4){
+                //pour tout le mond
+                for(var i = 0;i<d.length;i++){
+                        if(d[i]["Type"]==typeEventSelect ){
+                            tab = ajouterElementDansMap(d[i],tab);
+                        }
+                }
+            }
+        //"2" pour un jeu avec 15 tour
+        }else if(typeGameSelect==2){
+            document.getElementById("GameNumberContainer").style.display = "block";
+            if(typePlayerSelect==1){
+                // pour joueur LaMass
+                    for(var i = 0;i<d.length;i++){
+                        if( d[i]["Pseudo"]=="LaMasse" && d[i]["Type"]==typeEventSelect && d[i]["Game_number"]==GameNumberSelect){
+                            tab = ajouterElementDansMap(d[i],tab);
+                        }
+                    }
+            }else if(typePlayerSelect==2){
+                //pour equipe T
+                for(var i = 0;i<d.length;i++){
+                        if(d[i]["Team"]=="T" && d[i]["Type"]==typeEventSelect && d[i]["Game_number"]==GameNumberSelect){
+                            tab = ajouterElementDansMap(d[i],tab);
+                        }
+                }
+            }else if(typePlayerSelect==3){
+                //pour equipe CT
+                for(var i = 0;i<d.length;i++){
+                        if(d[i]["Team"]=="CT" && d[i]["Type"]==typeEventSelect && d[i]["Game_number"]==GameNumberSelect){
+                            tab = ajouterElementDansMap(d[i],tab);
+                        }
+                }
+            }else if(typePlayerSelect==4){
+                //pour tout le mond
+                for(var i = 0;i<d.length;i++){
+                        if(d[i]["Type"]==typeEventSelect && d[i]["Game_number"]==GameNumberSelect){
+                            tab = ajouterElementDansMap(d[i],tab);
+                        }
+                }
+            }
+            //3 pour un tour pendant un jeu
+        }else if(typeGameSelect==3){
+            document.getElementById("GameNumberContainer").style.display = "block";
+            document.getElementById("RoundNumberContainer").style.display = "block";
+            if(typePlayerSelect==1){
+                // pour joueur LaMass
+                    for(var i = 0;i<d.length;i++){
+                        if( d[i]["Pseudo"]=="LaMasse" && d[i]["Type"]==typeEventSelect && 
+                        d[i]["Game_number"]==GameNumberSelect && d[i]["Round_number"]==roundNumberSelect){
+                            tab = ajouterElementDansMap(d[i],tab);
+                        }
+                    }
+            }else if(typePlayerSelect==2){
+                //pour equipe T
+                for(var i = 0;i<d.length;i++){
+                        if(d[i]["Team"]=="T" && d[i]["Type"]==typeEventSelect 
+                        && d[i]["Game_number"]==GameNumberSelect && d[i]["Round_number"]==roundNumberSelect){
+                            tab = ajouterElementDansMap(d[i],tab);
+                        }
+                }
+            }else if(typePlayerSelect==3){
+                //pour equipe CT
+                for(var i = 0;i<d.length;i++){
+                        if(d[i]["Team"]=="CT" && d[i]["Type"]==typeEventSelect 
+                        && d[i]["Game_number"]==GameNumberSelect && d[i]["Round_number"]==roundNumberSelect){
+                            tab = ajouterElementDansMap(d[i],tab);
+                        }
+                }
+            }else if(typePlayerSelect==4){
+                //pour tout le mond
+                for(var i = 0;i<d.length;i++){
+                        if(d[i]["Type"]==typeEventSelect 
+                        && d[i]["Game_number"]==GameNumberSelect && d[i]["Round_number"]==roundNumberSelect){
+                            tab = ajouterElementDansMap(d[i],tab);
+                        }
+                }
+            }
+        }
+
+        listpoint = [];
+        //transfer value dans hashmap en liste points pour ajouter dans heatmap
+        for(var [key,value] of tab){
+            let arr = key.split(",");
+            var point = {
+            x: parseInt(arr[0]),
+            y: parseInt(arr[1]),
+            value: value
+            };
+            listpoint.push(point);
+        }
+        
+        //var listpoint = geneDataHasard(1000,1000);
+        genereHeatmap(listpoint);
+
+    }
+
+    update(d);
+
+    // Event handlers
+    document
+        .getElementById("typeEventSelect")
+        .addEventListener("change", function select_update() {
+            update(d)
+        });
+    document
+        .getElementById("typeGameSelect")
+        .addEventListener("change", function select_update() {
+            update(d)
+        });
+    document
+        .getElementById("typePlayerSelect")
+        .addEventListener("change", function select_update() {
+            update(d)
+        });
+    document
+        .getElementById("sliderGameNumber")
+        .addEventListener("change", function select_update() {
+            update(d)
+        });
+    document
+        .getElementById("sliderRoundNumber")
+        .addEventListener("change", function select_update() {
+            update(d)
+        });
+    
+    });
+
+
+    //show round number
+    d3.select("#sliderRoundNumber").on("input", function () {
+        d3.select("#RoundNumber").html(
+        "Round Number : " +
+          " " + this.value
+      );
+    });
+    
+    //show Game number
+    d3.select("#sliderGameNumber").on("input", function () {
+        d3.select("#GameNumber").html(
+        "Game Number : " +
+          " " + this.value
+      );
+    });
+</script>
