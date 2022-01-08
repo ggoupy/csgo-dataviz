@@ -14,7 +14,7 @@ The objective of this project is to visualize the performance of a player on the
 ## Visualization
 The visualization is available here : https://ggoupy.github.io/csgo-dataviz/
 
-## 
+## Teasing
 <p align="center">
   <img src="https://github.com/ggoupy/csgo-dataviz/tree/main/img/thumbnail.png" />
 </p>
