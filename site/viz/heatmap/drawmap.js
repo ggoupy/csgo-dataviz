@@ -1,7 +1,7 @@
 var nomJoueur = "LaMasse";
 
-    //creer hash map pour stocker
-    var d=d3.csv("src_heatmap/positionsAlt.csv").then(d=>{
+//creer hash map pour stocker
+var d=d3.csv("src_heatmap/positionsAlt.csv").then(d=>{
     
 
     function update(d){
