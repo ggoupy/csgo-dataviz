@@ -1,17 +1,26 @@
-# csgo-dataviz
+# CSGO-dataviz
 
-*Attention : \[WOP]*
+## Context
+This project has been realized for the [Data Visualization](https://lyondataviz.github.io/teaching/lyon1-m2/2021/) course, supervized by [Aurélien Tabard](https://tabard.fr/) at Université Claude Bernard Lyon 1. The aim is to create a visualization on our personal data. *For more information about the project, please see : [here](https://lyondataviz.github.io/teaching/lyon1-m2/2021/projets.html).*
 
-## Contexte
-Ce projet est réalisé dans le cadre de l'enseignement [Data Vizualization](https://lyondataviz.github.io/teaching/lyon1-m2/2021/), M2 Université Claude Bernard Lyon 1. Il est encadré par [Aurélien Tabard](https://tabard.fr/) et a pour objectif de réaliser une visualisation sur les données personnelles. *Pour plus d'informations sur le projet, voir : [ici](https://lyondataviz.github.io/teaching/lyon1-m2/2021/projets.html).*
+## Purpose 
+The objective of this project is to visualize the performance of a player on the online game Counter-Strike: Global Offensive. Many tools are already available to meet this need. However, most of them do not offer (or only a few) comparisons between the players inside of the game and do not analyze the performances by round. Thus, this project has the particular goal of answering these two needs: more detailed analyses on the whole game and comparisons between players. It will bring tools, which can be useful for occasional players as well as for professional teams, to answer the following questions: 
+    - How can I improve myself ?
+    - Which team is best for me?
+    - What position is best for me?
+    - What weapons do I use most effectively?
+    - In which situations do I perform best?
 
-## Objectif 
-L'objectif de ce projet est de visualiser les performances d'un joueur sur le jeu en ligne Counter-Strike : Global Offensive. De nombreux outils sont déjà à disposition pour répondre à ce besoin. Cependant, la majorité ne propose pas (ou peu) de comparaisons entre les différents joueurs de la partie et ne permettent pas d'analyser les performances par round. Ainsi, ce projet a pour but particulier de répondre à ces deux nécessités : des analyses plus détaillées sur l'ensemble d'une partie et des comparaisons entre les joueurs. Il apportera des outils, pouvant être utiles pour des joueurs occasionnels comme pour des équipes professionnelles, permettant de notamment répondre aux questions suivantes : 
-- *Comment améliorer mon niveau de jeu ?*
-- *Quelle équipe me convient le mieux ?*
-- *Quel est mon poste le plus adapté ?*
-- *Quelles sont les armes avec lesquelles je suis le plus efficace ?*
-- *Dans quelles situations suis-je le plus performant ?*
+## Visualization
+The visualization is available here : https://ggoupy.github.io/csgo-dataviz/
 
-## Visualisation
-La visualisation est disponible ici : https://ggoupy.github.io/csgo-dataviz/
+## Teasing
+<p align="center">
+  <img src="https://github.com/ggoupy/csgo-dataviz/tree/main/img/thumbnail.png" />
+</p>
+
+## Authors
+- Titouan KNOCKAERT
+- Jianxiao ZHANG
+- Yuri GARDINAZZI
+- Gaspard GOUPY
