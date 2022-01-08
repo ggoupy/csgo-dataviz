@@ -1,5 +1,12 @@
 # CSGO-dataviz
 
+## TODO
+- Images représentative du projet, une grand format : teaser.png, une miniature (500x300) thumbnail.png ou gif à la racine de votre projet
+- Image / gif 500x300 sur README
+- Pull request
+- Presentation
+- Cahier d'avancement
+
 ## Context
 This project has been realized for the [Data Visualization](https://lyondataviz.github.io/teaching/lyon1-m2/2021/) course, supervized by [Aurélien Tabard](https://tabard.fr/) at Université Claude Bernard Lyon 1. The aim is to create a visualization on our personal data. *For more information about the project, please see : [here](https://lyondataviz.github.io/teaching/lyon1-m2/2021/projets.html).*
 
@@ -24,3 +31,11 @@ The visualization is available here : https://ggoupy.github.io/csgo-dataviz/
 - Jianxiao ZHANG
 - Yuri GARDINAZZI
 - Gaspard GOUPY
+
+## Sources and credits 
+- [scope.gg](https://scope.gg/)
+- [leetify.com](https://leetify.com/)
+- [csgostats.gg](https://csgostats.gg/)
+- [d3.js](https://d3js.org/)
+- [d3 gallery](https://github.com/d3/d3/wiki/gallery)
+- [infovis](http://www.cs.ubc.ca/group/infovis/resources.shtml)
