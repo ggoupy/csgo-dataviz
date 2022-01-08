@@ -99,8 +99,8 @@
     //draw heatmap
     function genereHeatmap(points){
       var radius = 20;
-      var width = 1000;
-      var height = 1000;
+      var width = 1000*0.8;
+      var height = 1000*0.8;
     
       var canvas = d3
         .select("#heatmap")
@@ -255,8 +255,8 @@ var d=d3.csv("viz/heatmap/positionsAlt.csv").then(d=>{
             //y=Math.floor(487-y/7.1+220);
             x=x+2911.96;
             y=y+2479.4;
-            x=Math.floor(x/7.5+80);
-            y=Math.floor(487-y/7.5+255);
+            x=Math.floor((x/8+120)*0.8);
+            y=Math.floor((487-y/8+255)*0.8);
             let key = x.toString()+","+y.toString();
             if(tab.has(key)){
                 tab.set(key,tab.get(key)+1);
