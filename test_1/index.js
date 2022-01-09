@@ -1,6 +1,6 @@
 
 
-var weapons = ["AK-47","AWP","GALIL","GLOCK-17","M4A1-S","M4A4","SSG08","USP","CZ75","Glock-18", "MAC-10"];
+var weapons = ["AK-47","AWP","Galil AR","GLOCK-17","M4A1-S","M4A4","SSG08","USP","CZ75","Glock-18", "MAC-10","P90","Knife","FAMAS", "Desert Eagle","XM1014"];
  function readData(){
   d3.csv("output.csv").then(function(d){
     var precision_weapon = {}
@@ -9,7 +9,7 @@ var weapons = ["AK-47","AWP","GALIL","GLOCK-17","M4A1-S","M4A4","SSG08","USP","C
         weapons.forEach(function(weapon){
           fired = d[i]["shots_fired_"+weapon];
           hit = d[i]["shots_hit_"+weapon];
-          console.log("shots_fired_"+weapon+" "+ d[i]["shots_hit_"+weapon]); 
+          console.log("precision "+weapon+" "+ hit/fired); 
           if((hit/fired) >= 0){
             precision_weapon[weapon] = {'precision': hit/fired, 'hit': hit, "fired":fired};
           }
