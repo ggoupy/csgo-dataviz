@@ -1,6 +1,6 @@
 
 
-var weapons = ["AK-47","AWP","GALIL","GLOCK-17","M4A1-S","M4A4","SSG08","USP"];
+var weapons = ["AK-47","AWP","GALIL","GLOCK-17","M4A1-S","M4A4","SSG08","USP","CZ75","Glock-18", "MAC-10"];
  function readData(){
   d3.csv("output.csv").then(function(d){
     var precision_weapon = {}
@@ -40,7 +40,7 @@ function addWeapons(){
 }
 
 function changePercentage(){
-        for(i = 0; i < 8; i++){
+        for(i = 0; i < weapons.length; i++){
           var width = $('#weapon_'+i).width();
           var height = $('#weapon_'+i).height();
           width *=Math.random();
