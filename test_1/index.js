@@ -18,9 +18,9 @@ function readData(){
         .append('option')
         .text(d => d)
         .attr('value', d => d);
-
+    showPlayerGraph(player_names[0]);
   });
- 
+  
 }
 
 function addWeapons(){
@@ -47,9 +47,8 @@ function changeWeapons(precision_weapon){
   d3.selectAll(".weapon_image").remove();
 
   var chart = d3.select("#weapon_chart");
-  
   weapons.forEach(function(w,index,array){
-    precision = precision_weapon[w].precision;
+    precision = precision_weapon[w].precision%100;
     if(precision > 0){
       chart.append("div")
         .attr("id","bar_"+index)
@@ -58,10 +57,10 @@ function changeWeapons(precision_weapon){
         .attr("src","weapons/"+w+".png")
         .attr("id","weapon_"+index);
       width = $("#weapon_"+index).width() * precision;
-      height = $("#weapon_"+index).height() *precision;
+      height = $("#weapon_"+index).height();
       $("#bar_"+index).width(width);
       $("#bar_"+index).height(height);
-      console.log(precision)
+      console.log(precision);
     }
 
   });

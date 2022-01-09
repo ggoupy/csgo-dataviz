@@ -2,11 +2,3 @@
 
     background-color:rgb(241, 38, 2);
 }
-.progress:before,
-.progress:after {
-    content: "";
-    display: table;
-}
-.progress:after {
-    clear: both;
-}
