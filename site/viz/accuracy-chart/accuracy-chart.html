@@ -252,9 +252,18 @@
         .attr("fill", function (d, i) {
         return colors[i];
         })
-          .attr("d", function (d) {
-            return arc(d);
-          });
+        .attr("d", function (d) {
+        return arc(d);
+        })
+        .transition()
+        .duration(600)
+        .attrTween("d", function (d) {
+            var i = d3.interpolate(d.endAngle, d.startAngle);
+            return function (t) {
+                d.startAngle = i(t);
+                return arc(d);
+            }
+        })
 
     arcs
         .append("text")
@@ -314,6 +323,7 @@
         (dataset[4][1] / hit_total) * 100, //leg
         (dataset[3][1] / hit_total) * 100 //arm
     ];
+    dataArray = dataArray.map(val => isNaN(val) ? 0 : val);
 
     //scala de couleur
     var liner = d3
@@ -321,32 +331,47 @@
         .domain([0, 100])
         .range(d3.schemeReds[9]);
 
+
     d3.select("#csgo_head")
         .selectAll("path")
+        .transition()
+        .duration(200)
         .style("fill", liner(dataArray[0]));
 
     d3.select("#csgo_cheast")
         .selectAll("path")
+        .transition()
+        .duration(200)
         .style("fill", liner(dataArray[1]));
 
     d3.select("#csgo_stomach")
         .selectAll("path")
+        .transition()
+        .duration(200)
         .style("fill", liner(dataArray[2]));
 
     d3.select("#csgo_legs")
         .selectAll("path")
+        .transition()
+        .duration(200)
         .style("fill", liner(dataArray[3]));
 
     d3.select("#csgo_arm1")
         .selectAll("path")
+        .transition()
+        .duration(200)
         .style("fill", liner(dataArray[4]));
 
     d3.select("#csgo_arm2")
         .selectAll("path")
+        .transition()
+        .duration(200)
         .style("fill", liner(dataArray[4]));
 
     d3.select("#csgo_arm3")
         .selectAll("path")
+        .transition()
+        .duration(200)
         .style("fill", liner(dataArray[4]));
     }
 
@@ -440,6 +465,9 @@
             "Round Number : " + " " + roundNumberSelect
         );
 
+        //Number of games
+        $("#sliderGameNumber_pie").attr("min", d3.min(data, function (d) { return parseInt(d.Game_number); }));
+        $("#sliderGameNumber_pie").attr("max", d3.max(data, function (d) { return parseInt(d.Game_number); }));
         //Number of round
         $("#sliderRoundNumber_pie").attr("min", d3.min(data.filter(d => d.Game_number == GameNumberSelect), function (d) { return parseInt(d.Round_number); }));
         $("#sliderRoundNumber_pie").attr("max", d3.max(data.filter(d => d.Game_number == GameNumberSelect), function (d) { return parseInt(d.Round_number); }));
