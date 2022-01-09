@@ -13,7 +13,7 @@ Observer les diff&eacute;rents points d'int&eacute;r&ecirc;ts sur une map en fon
     </select>
     <select id="typeGameSelect" onchange="">
         <option value="1">All the games</option>
-        <option value="2">One game</option>
+        <option selected="selected" value="2">One game</option>
         <option value="3">One round</option>
     </select>
     <select id="typePlayerSelect" onchange="">
@@ -232,6 +232,15 @@ var d=d3.csv("viz/heatmap/positionsAlt.csv").then(d=>{
         //Number of round
         $("#sliderRoundNumber").attr("min", d3.min(d.filter(d => d.Game_number == GameNumberSelect), function (d) { return parseInt(d.Round_number); }));
         $("#sliderRoundNumber").attr("max", d3.max(d.filter(d => d.Game_number == GameNumberSelect), function (d) { return parseInt(d.Round_number); }));
+
+        //Labels
+        d3.select("#GameNumber").html(
+            "Game Number : " + " " + GameNumberSelect
+        );
+        
+        d3.select("#RoundNumber").html(
+            "Round Number : " + " " + roundNumberSelect
+        );
 
         if(typeEventSelect==1){
             typeEventSelect = "DamageInfliged";
