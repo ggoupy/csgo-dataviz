@@ -1,12 +1,5 @@
 # CSGO-dataviz
 
-## TODO
-- Images représentative du projet, une grand format : teaser.png, une miniature (500x300) thumbnail.png ou gif à la racine de votre projet
-- Image / gif 500x300 sur README
-- Pull request
-- Presentation
-- Cahier d'avancement
-
 ## Context
 This project has been realized for the [Data Visualization](https://lyondataviz.github.io/teaching/lyon1-m2/2021/) course, supervized by [Aurélien Tabard](https://tabard.fr/) at Université Claude Bernard Lyon 1. The aim is to create a visualization on our personal data. *For more information about the project, please see : [here](https://lyondataviz.github.io/teaching/lyon1-m2/2021/projets.html).*
 
