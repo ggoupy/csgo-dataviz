@@ -10,7 +10,7 @@
 
   <body>
     <h3>Still some work to do but the basic idea works</h3>
-    Player Name: <select id="player_name"></select>
+    Player Name: <select id="player_name" onchange="showPlayerGraph(this.value)"></select>
     <div id="weapon_chart"  ></div>
 
     <button id="btn" onclick="changePercentage()">Randomize!</button>

@@ -1,7 +1,9 @@
 
 
-var weapons = ["AK-47","AWP","Galil AR","GLOCK-17","M4A1-S","M4A4","SSG08","USP","CZ75","Glock-18", "MAC-10","P90","Knife","FAMAS", "Desert Eagle","XM1014"];
- function readData(){
+//var weapons = ["AK-47","AWP","Galil AR","GLOCK-17","M4A1-S","M4A4","SSG08","USP","CZ75","Glock-18", "MAC-10","P90","Knife","FAMAS", "Desert Eagle","XM1014"];
+//weapons in output.csv
+var weapons = ["AK-47","AWP","Galil AR","M4A4","SSG","USP-S","CZ75","Glock-18", "MAC-10","P90","Knife","FAMAS", "Desert Eagle","XM1014"];
+function readData(){
   d3.csv("output.csv").then(function(d){
     var precision_weapon = {}
     var player_names = [...new Set(d.map(d => d.Pseudo))];
@@ -17,22 +19,6 @@ var weapons = ["AK-47","AWP","Galil AR","GLOCK-17","M4A1-S","M4A4","SSG08","USP"
         .text(d => d)
         .attr('value', d => d);
 
-
-    for(var i = 0; i < d.length; i++){
-      if(d[i].Pseudo === "LaMasse" && d[i].Game_number==3 && d[i].Round_number == 2){
-        weapons.forEach(function(weapon){
-          fired = d[i]["shots_fired_"+weapon];
-          hit = d[i]["shots_hit_"+weapon];
-          console.log("precision "+weapon+" "+ hit/fired); 
-          if((hit/fired) >= 0){
-            precision_weapon[weapon] = {'precision': hit/fired, 'hit': hit, "fired":fired};
-          }
-
-        });
-        console.log(precision_weapon);
-      }
-    }
-    
   });
  
 }
@@ -60,12 +46,52 @@ function changePercentage(){
           width *=Math.random();
           $("#bar_"+i).width(width);
           $("#bar_"+i).height(height);   
-}
+        }
 
         
 }
+
+/*Display the precision graph for the given player*/
+function showPlayerGraph(player){
+  precision_weapon = {};
+  fired = {};
+  hit   = {};
+  weapons.forEach(function(w){
+    precision_weapon[w] = {'precision': 0,'hit':0,'fired':0};
+  });
+
+  console.log("Showing stats for: "+ player);
+  d3.csv("output.csv").then(function(d){
+      console.log("Data for: "+ player);
+
+      //Count the fired and hit shots for every game
+      for(var i = 0; i < d.length; i++){
+        if(d[i].Pseudo === player){
+            weapons.forEach(function(weapon){
+            precision_weapon[weapon].fired += d[i]["shots_fired_"+weapon];
+            precision_weapon[weapon].hit += d[i]["shots_hit_"+weapon];
+          });
+        }
+      }
+
+
+      weapons.forEach(function(w){
+        if(precision_weapon[w].fired > 0){
+          precision_weapon[w].precision = precision_weapon[w].hit/precision_weapon[w].fired;
+          console.log("weapon " + w+":" + precision_weapon[w].precision)
+        }
+      });
+
+      
+  });
+  //console.log(precision_weapon);
+
+}
 addWeapons();
 readData();
+
+
+
 var data = { percent: 5.0 };
 
 
