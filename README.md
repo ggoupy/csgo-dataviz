@@ -23,7 +23,7 @@ The visualization is available here : https://ggoupy.github.io/csgo-dataviz/
 
 ## Teasing
 <p align="center">
-  <img src="https://github.com/ggoupy/csgo-dataviz/tree/main/img/thumbnail.gif" />
+  <img src="https://github.com/ggoupy/csgo-dataviz/blob/main/data/img/thumbnail.gif" />
 </p>
 
 ## Authors
