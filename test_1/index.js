@@ -29,15 +29,46 @@ function addWeapons(){
   weapons.forEach(function(item,index,array){
     var graph = d3.select("#weapon_chart").append("div")
       .attr("id","bar_"+index)
-      .attr("class","progress")
+      .attr("class","progress weapon_image")
       .append("img")
       .attr("src","weapons/"+item+".png")
       .attr("id","weapon_"+index);
     $("#bar_"+index).width($("#weapon_"+index).width());
     $("#bar_"+index).height($("#weapon_"+index).height());
-    console.log($("#weapon_"+index).width());
   });
 }
+
+function changeWeapons(precision_weapon){
+
+  console.log("son qua");
+  console.log(precision_weapon);
+
+  //clear graph
+  d3.selectAll(".weapon_image").remove();
+
+  var chart = d3.select("#weapon_chart");
+  
+  weapons.forEach(function(w,index,array){
+    precision = precision_weapon[w].precision;
+    if(precision > 0){
+      chart.append("div")
+        .attr("id","bar_"+index)
+        .attr("class","progress weapon_image")
+        .append("img")
+        .attr("src","weapons/"+w+".png")
+        .attr("id","weapon_"+index);
+      width = $("#weapon_"+index).width() * precision;
+      height = $("#weapon_"+index).height() *precision;
+      $("#bar_"+index).width(width);
+      $("#bar_"+index).height(height);
+      console.log(precision)
+    }
+
+  });
+
+ 
+}
+
 
 function changePercentage(){
         for(i = 0; i < weapons.length; i++){
@@ -78,11 +109,11 @@ function showPlayerGraph(player){
       weapons.forEach(function(w){
         if(precision_weapon[w].fired > 0){
           precision_weapon[w].precision = precision_weapon[w].hit/precision_weapon[w].fired;
-          console.log("weapon " + w+":" + precision_weapon[w].precision)
+          //console.log("weapon " + w+":" + precision_weapon[w].precision)
         }
       });
 
-      
+      changeWeapons(precision_weapon);
   });
   //console.log(precision_weapon);
 
