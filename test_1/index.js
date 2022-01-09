@@ -27,7 +27,8 @@ function addWeapons(){
   //var weapons = ["AK-47.png","AWP.png","GALIL.png","GLOCK-17.png","M4A1-S.png","M4A4.png","SSG08.png","USP.png"];
 
   weapons.forEach(function(item,index,array){
-    var graph = d3.select("#weapon_chart").append("div")
+    var graph = d3.select("#weapon_chart")
+      .append("div")
       .attr("id","bar_"+index)
       .attr("class","progress weapon_image")
       .append("img")
@@ -48,19 +49,34 @@ function changeWeapons(precision_weapon){
 
   var chart = d3.select("#weapon_chart");
   weapons.forEach(function(w,index,array){
+
     precision = precision_weapon[w].precision%100;
+    precision = precision.toFixed(2);
     if(precision > 0){
+      chart.append("span")
+           .attr("class","weapon_image")
+           .text(precision);
       chart.append("div")
         .attr("id","bar_"+index)
         .attr("class","progress weapon_image")
         .append("img")
         .attr("src","weapons/"+w+".png")
         .attr("id","weapon_"+index);
+      console.log("img_height: "+$("#weapon_"+index).height() + "index: "+index );
       width = $("#weapon_"+index).width() * precision;
       height = $("#weapon_"+index).height();
       $("#bar_"+index).width(width);
-      $("#bar_"+index).height(height);
-      console.log(precision);
+      if(height <= 0){
+        /*TODO: bug, it doesn't always work. It seems that images are not always
+          displayed immediatly so it happens that the height becomes 0 and they all overlap
+        */
+        $("#bar_"+index).height(49); 
+      }else{
+        $("#bar_"+index).height(height);
+      }
+
+      console.log("width: "+width + "px height: "+height);
+      console.log(w+" "+precision);
     }
 
   });
