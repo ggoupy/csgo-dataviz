@@ -29,7 +29,7 @@ Observer les diff&eacute;rents points d'int&eacute;r&ecirc;ts sur une map en fon
         type="range"
         value="0"
         min="0"
-        max="19"
+        max="25"
         step="1"
         />
         <span id="GameNumber">Game Number</span>
@@ -41,7 +41,7 @@ Observer les diff&eacute;rents points d'int&eacute;r&ecirc;ts sur une map en fon
         type="range"
         value="1"
         min="1"
-        max="15"
+        max="30"
         step="1"
         />
         <span id="RoundNumber">Round Number</span><br />
@@ -135,7 +135,7 @@ Observer les diff&eacute;rents points d'int&eacute;r&ecirc;ts sur une map en fon
         context.fillStyle = radialGradient;
         
         let globalAlpha = (d.value - min) / (max - min)
-        context.globalAlpha = Math.max(Math.min(globalAlpha, 1), 0)
+        context.globalAlpha = 1;//Math.max(Math.min(globalAlpha, 1), 0)
          
         context.fill();
         context.closePath();
@@ -206,6 +206,9 @@ var nomJoueur = "LaMasse";
 //creer hash map pour stocker
 var d=d3.csv("viz/heatmap/positionsAlt.csv").then(d=>{
     
+    //Number of games
+    $("#sliderGameNumber").attr("min", d3.min(d, function (d) { return parseInt(d.Game_number); }));
+    $("#sliderGameNumber").attr("max", d3.max(d, function (d) { return parseInt(d.Game_number); }));
 
     function update(d){
         //effacer la carte d'abord
@@ -225,7 +228,10 @@ var d=d3.csv("viz/heatmap/positionsAlt.csv").then(d=>{
         var typePlayerSelect = d3.select("#typePlayerSelect").property("value");
         var roundNumberSelect = d3.select("#sliderRoundNumber").property("value");
         var GameNumberSelect = d3.select("#sliderGameNumber").property("value");
-        //console.log(typeEventSelect," ",typeGameSelect," ",typePlayerSelect," ",roundNumberSelect," ",GameNumberSelect);
+
+        //Number of round
+        $("#sliderRoundNumber").attr("min", d3.min(d.filter(d => d.Game_number == GameNumberSelect), function (d) { return parseInt(d.Round_number); }));
+        $("#sliderRoundNumber").attr("max", d3.max(d.filter(d => d.Game_number == GameNumberSelect), function (d) { return parseInt(d.Round_number); }));
 
         if(typeEventSelect==1){
             typeEventSelect = "DamageInfliged";
@@ -386,27 +392,27 @@ var d=d3.csv("viz/heatmap/positionsAlt.csv").then(d=>{
     document
         .getElementById("typeEventSelect")
         .addEventListener("change", function select_update() {
-            update(d)
+            update(d);
         });
     document
         .getElementById("typeGameSelect")
         .addEventListener("change", function select_update() {
-            update(d)
+            update(d);
         });
     document
         .getElementById("typePlayerSelect")
         .addEventListener("change", function select_update() {
-            update(d)
+            update(d);
         });
     document
         .getElementById("sliderGameNumber")
         .addEventListener("change", function select_update() {
-            update(d)
+            update(d);
         });
     document
         .getElementById("sliderRoundNumber")
         .addEventListener("change", function select_update() {
-            update(d)
+            update(d);
         });
     
     });
