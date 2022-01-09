@@ -4,6 +4,20 @@ var weapons = ["AK-47","AWP","Galil AR","GLOCK-17","M4A1-S","M4A4","SSG08","USP"
  function readData(){
   d3.csv("output.csv").then(function(d){
     var precision_weapon = {}
+    var player_names = [...new Set(d.map(d => d.Pseudo))];
+
+    console.log("player_names" + player_names.length);
+
+        
+    d3.select('#player_name')
+      .selectAll('option')
+        .data(player_names)
+      .enter()
+        .append('option')
+        .text(d => d)
+        .attr('value', d => d);
+
+
     for(var i = 0; i < d.length; i++){
       if(d[i].Pseudo === "LaMasse" && d[i].Game_number==3 && d[i].Round_number == 2){
         weapons.forEach(function(weapon){
