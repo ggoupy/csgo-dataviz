@@ -3,8 +3,11 @@
 //var weapons = ["AK-47","AWP","Galil AR","GLOCK-17","M4A1-S","M4A4","SSG08","USP","CZ75","Glock-18", "MAC-10","P90","Knife","FAMAS", "Desert Eagle","XM1014"];
 //weapons in output.csv
 var weapons = ["AK-47","AWP","Galil AR","M4A4","SSG","USP-S","CZ75","Glock-18", "MAC-10","P90","Knife","FAMAS", "Desert Eagle","XM1014"];
+var dataPath = "viz/weapon-chart/output.csv";
+var weaponPath = "viz/weapon-chart/weapons/"
+
 function readData(){
-  d3.csv("output.csv").then(function(d){
+  d3.csv(dataPath).then(function(d){
     var precision_weapon = {}
     var player_names = [...new Set(d.map(d => d.Pseudo))];
 
@@ -49,7 +52,7 @@ function changeWeapons(precision_weapon){
             .attr("id","bar_"+index)
             .attr("class","progress removable")
             .append("img")
-            .attr("src","weapons/"+w+".png")
+            .attr("src",weaponPath+w+".png")
             .attr("id","weapon_"+index);
       
       chart.select("#tr_"+index)
@@ -90,7 +93,7 @@ function showPlayerGraph(player){
     precision_weapon[w] = {'precision': 0,'hit':0,'fired':0};
   });
 
-  d3.csv("output.csv").then(function(d){
+  d3.csv(dataPath).then(function(d){
 
       //Count the fired and hit shots for every game
       for(var i = 0; i < d.length; i++){
