@@ -2,7 +2,9 @@
 
 //var weapons = ["AK-47","AWP","Galil AR","GLOCK-17","M4A1-S","M4A4","SSG08","USP","CZ75","Glock-18", "MAC-10","P90","Knife","FAMAS", "Desert Eagle","XM1014"];
 //weapons in output.csv
-var weapons = ["AK-47","AWP","Galil AR","M4A4","SSG","USP-S","CZ75","Glock-18", "MAC-10","P90","Knife","FAMAS", "Desert Eagle","XM1014"];
+var weapons = ["AK-47","AWP","Galil AR","M4A4","SSG 08","USP-S","CZ75 Auto","Glock-18", "MAC-10","P90","Knife","FAMAS", "Desert Eagle",
+              "Smoke Grenade","XM1014","Flashbang", "HE Grenade","AUG", "Dual Berettas","Five-SeveN","G3SG1","P2000","MAG-7","MP5-SD",
+              "Zeus x27","MP9","Negev","Nova","PP-Bizon","R8-Revolver","Sawed-Off","SG 553","Tec-9","UMP-45"];
 var dataPath = "viz/weapon-chart/output.csv";
 var weaponPath = "viz/weapon-chart/weapons/"
 
