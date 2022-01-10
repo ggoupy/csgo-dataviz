@@ -4,10 +4,13 @@
 }
 
 .precision {
-    width: 50px;
+    width: 49px;
     height: 49px;
     background-color: rgb(0, 0, 0);
     color: rgb(241, 38, 2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 /*
 .container{
