@@ -24,14 +24,16 @@ function readData(){
 }
 
 
-
+/*Change the weapon displayed on the graph
+* precision_weapon: is a list of weapons and precision
+*/
 function changeWeapons(precision_weapon){
 
   console.log("son qua");
   console.log(precision_weapon);
 
   //clear graph
-  d3.selectAll(".weapon_image").remove();
+  d3.selectAll(".removable").remove();
 
   var chart = d3.select("#weapon_chart");
   weapons.forEach(function(w,index,array){
@@ -39,19 +41,32 @@ function changeWeapons(precision_weapon){
     precision = precision_weapon[w].precision%100;
     precision = precision.toFixed(2);
     if(precision > 0){
-      chart.append("span")
-           .attr("class","weapon_image")
+      chart.append("tr")
+           .attr("class","removable")
+           .attr("id","tr_"+index).append("td")
+            .attr("width","150")
+            .append("div")
+            .attr("id","bar_"+index)
+            .attr("class","progress removable")
+            .append("img")
+            .attr("src","weapons/"+w+".png")
+            .attr("id","weapon_"+index);
+      
+      chart.select("#tr_"+index)
+           .append("td")
+           .append("div")
+           .attr("class","removable precision")
            .text(precision);
-      chart.append("div")
-        .attr("id","bar_"+index)
-        .attr("class","progress weapon_image")
-        .append("img")
-        .attr("src","weapons/"+w+".png")
-        .attr("id","weapon_"+index);
+
       console.log("img_height: "+$("#weapon_"+index).height() + "index: "+index );
       width = $("#weapon_"+index).width() * precision;
       height = $("#weapon_"+index).height();
-      $("#bar_"+index).width(width);
+      
+      if(width <= 0 && precision > 0){
+        $("#bar_"+index).width(150*precision);
+      }else{
+        $("#bar_"+index).width(width);
+      }
       if(height <= 0){
         /*TODO: bug, it doesn't always work. It seems that images are not always
           displayed immediatly so it happens that the height becomes 0 and they all overlap
@@ -68,19 +83,6 @@ function changeWeapons(precision_weapon){
   });
 
  
-}
-
-
-function changePercentage(){
-        for(i = 0; i < weapons.length; i++){
-          var width = $('#weapon_'+i).width();
-          var height = $('#weapon_'+i).height();
-          width *=Math.random();
-          $("#bar_"+i).width(width);
-          $("#bar_"+i).height(height);   
-        }
-
-        
 }
 
 /*Display the precision graph for the given player*/
