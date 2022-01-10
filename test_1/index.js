@@ -23,21 +23,7 @@ function readData(){
   
 }
 
-function addWeapons(){
-  //var weapons = ["AK-47.png","AWP.png","GALIL.png","GLOCK-17.png","M4A1-S.png","M4A4.png","SSG08.png","USP.png"];
 
-  weapons.forEach(function(item,index,array){
-    var graph = d3.select("#weapon_chart")
-      .append("div")
-      .attr("id","bar_"+index)
-      .attr("class","progress weapon_image")
-      .append("img")
-      .attr("src","weapons/"+item+".png")
-      .attr("id","weapon_"+index);
-    $("#bar_"+index).width($("#weapon_"+index).width());
-    $("#bar_"+index).height($("#weapon_"+index).height());
-  });
-}
 
 function changeWeapons(precision_weapon){
 
@@ -133,11 +119,7 @@ function showPlayerGraph(player){
   //console.log(precision_weapon);
 
 }
-addWeapons();
+
 readData();
-
-
-
-var data = { percent: 5.0 };
 
 
