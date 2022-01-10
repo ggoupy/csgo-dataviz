@@ -38,7 +38,7 @@ function changeWeapons(precision_weapon){
   var chart = d3.select("#weapon_chart");
   weapons.forEach(function(w,index,array){
 
-    var precision = precision_weapon[w].precision % 1;
+    var precision = (precision_weapon[w].precision % 1)*100;
     precision = precision.toFixed(2);
     if(precision > 0){
       chart.append("tr")
@@ -58,11 +58,11 @@ function changeWeapons(precision_weapon){
            .attr("class","removable precision")
            .text(precision+"%");
 
-      width = $("#weapon_"+index).width() * precision;
+      width = $("#weapon_"+index).width() * precision/100;
       height = $("#weapon_"+index).height();
       
       if(width <= 0 && precision > 0){
-        $("#bar_"+index).width(150*precision);
+        $("#bar_"+index).width(150*precision/100);
       }else{
         $("#bar_"+index).width(width);
       }
