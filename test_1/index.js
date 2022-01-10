@@ -38,7 +38,7 @@ function changeWeapons(precision_weapon){
   var chart = d3.select("#weapon_chart");
   weapons.forEach(function(w,index,array){
 
-    precision = precision_weapon[w].precision%100;
+    var precision = precision_weapon[w].precision % 1;
     precision = precision.toFixed(2);
     if(precision > 0){
       chart.append("tr")
@@ -56,9 +56,8 @@ function changeWeapons(precision_weapon){
            .append("td")
            .append("div")
            .attr("class","removable precision")
-           .text(precision);
+           .text(precision+"%");
 
-      console.log("img_height: "+$("#weapon_"+index).height() + "index: "+index );
       width = $("#weapon_"+index).width() * precision;
       height = $("#weapon_"+index).height();
       
@@ -75,9 +74,6 @@ function changeWeapons(precision_weapon){
       }else{
         $("#bar_"+index).height(height);
       }
-
-      console.log("width: "+width + "px height: "+height);
-      console.log(w+" "+precision);
     }
 
   });
@@ -94,9 +90,7 @@ function showPlayerGraph(player){
     precision_weapon[w] = {'precision': 0,'hit':0,'fired':0};
   });
 
-  console.log("Showing stats for: "+ player);
   d3.csv("output.csv").then(function(d){
-      console.log("Data for: "+ player);
 
       //Count the fired and hit shots for every game
       for(var i = 0; i < d.length; i++){
