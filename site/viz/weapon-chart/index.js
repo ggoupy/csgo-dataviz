@@ -22,8 +22,11 @@ function readData(){
       .enter()
         .append('option')
         .text(d => d)
+        .attr('id',d=>d)
         .attr('value', d => d);
-    showPlayerGraph(player_names[0]);
+    d3.select("#LaMasse")
+      .attr("selected","selected");
+    showPlayerGraph("LaMasse");
   });
   
 }
