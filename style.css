@@ -46,3 +46,22 @@
     background-color: #ffb3b3;
 }
 
+
+.progress {
+
+    background-color:rgb(241, 38, 2);
+}
+.weapon-container{
+    background-color: black;
+    height: 49px;
+    width: 150px;
+}
+.precision {
+    width: 70px;
+    height: 49px;
+    background-color: white;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
