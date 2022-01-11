@@ -8,25 +8,18 @@ var weapons = ["AK-47","AWP","Galil AR","M4A4","SSG 08","USP-S","CZ75 Auto","Glo
 var dataPath = "viz/weapon-chart/output.csv";
 var weaponPath = "viz/weapon-chart/weapons/"
 
+
+/**
+ *Read the Data and update the dynamical elements in HTML, in this case the sliding bar 
+ */
 function readData(){
   d3.csv(dataPath).then(function(d){
-    var precision_weapon = {}
-    var player_names = [...new Set(d.map(d => d.Pseudo))];
+  
+    numberOfGames = d3.max(d, function(d) { return d.Game_number; } );
+    d3.select('#gameNumber')
+      .attr("max",numberOfGames);
 
-    console.log("player_names" + player_names.length);
-
-        
-    d3.select('#player_name')
-      .selectAll('option')
-        .data(player_names)
-      .enter()
-        .append('option')
-        .text(d => d)
-        .attr('id',d=>d)
-        .attr('value', d => d);
-    d3.select("#LaMasse")
-      .attr("selected","selected");
-    showPlayerGraph("LaMasse");
+    showPlayerGraph();
   });
   
 }
@@ -36,9 +29,7 @@ function readData(){
 * precision_weapon: is a list of weapons and precision
 */
 function changeWeapons(precision_weapon){
-
-  console.log("son qua");
-  console.log(precision_weapon);
+  
 
   //clear graph
   d3.selectAll(".removable").remove();
@@ -91,8 +82,23 @@ function changeWeapons(precision_weapon){
  
 }
 
-/*Display the precision graph for the given player*/
-function showPlayerGraph(player){
+
+/**
+ * Display the graph of the player LaMasse
+ */
+function showPlayerGraph(){
+  gameNumber = $("#gameNumber").val();
+  playerToShow = $("#playerName").val();
+  $("#displayedGameNumber").text(gameNumber);
+
+  if(playerToShow === "everyone"){
+    document.getElementById('divSlider').style.display = 'none';
+
+  }else{
+    document.getElementById('divSlider').style.display = 'block';
+
+  }
+  
   precision_weapon = {};
   fired = {};
   hit   = {};
@@ -102,27 +108,35 @@ function showPlayerGraph(player){
 
   d3.csv(dataPath).then(function(d){
 
-      //Count the fired and hit shots for every game
-      for(var i = 0; i < d.length; i++){
-        if(d[i].Pseudo === player){
-            weapons.forEach(function(weapon){
-            precision_weapon[weapon].fired += d[i]["shots_fired_"+weapon];
-            precision_weapon[weapon].hit += d[i]["shots_hit_"+weapon];
-          });
+      //Count the fired and hit shots for a given game
+      if(playerToShow === "LaMasse"){
+        for(var i = 0; i < d.length; i++){
+          if(d[i].Game_number === gameNumber && d[i].Pseudo === playerToShow){
+              weapons.forEach(function(weapon){
+                precision_weapon[weapon].fired += Math.floor(d[i]["shots_fired_"+weapon]);
+                precision_weapon[weapon].hit += Math.floor(d[i]["shots_hit_"+weapon]);
+            });
+          }
+        }
+      }else{
+        for(var i = 0; i < d.length; i++){
+          weapons.forEach(function(weapon){
+              precision_weapon[weapon].fired += Math.floor(d[i]["shots_fired_"+weapon]);
+              precision_weapon[weapon].hit += Math.floor(d[i]["shots_hit_"+weapon]);
+          });      
         }
       }
+
 
 
       weapons.forEach(function(w){
         if(precision_weapon[w].fired > 0){
           precision_weapon[w].precision = precision_weapon[w].hit/precision_weapon[w].fired;
-          //console.log("weapon " + w+":" + precision_weapon[w].precision)
         }
       });
 
       changeWeapons(precision_weapon);
   });
-  //console.log(precision_weapon);
 
 }
 

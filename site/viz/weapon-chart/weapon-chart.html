@@ -2,7 +2,15 @@
 Visualiser la pr&eacute;cision d'un joueur avec les principales armes du jeu.
 </p>
 
-Player Name: <select id="player_name" onchange="showPlayerGraph(this.value)"></select>
+Show: 
+<select id="playerName" onchange="showPlayerGraph()">
+    <option value="LaMasse">LaMasse</option>
+    <option value="everyone">Everyone</option>
+</select>
+<div id="divSlider" class="slidecontainer">
+    Game number <span id="displayedGameNumber"></span>
+    <input type="range" min="1" max="100" value="1" class="slider" id="gameNumber" onchange="showPlayerGraph()">
+</div>
 <table id="weapon_chart" cellspacing="0" cellpadding="0" style="margin-left:auto;margin-right:auto;"></table>
 <link rel="stylesheet" href="viz/weapon-chart/custom_weapon_bar.css">
 <script src="https://d3js.org/d3.v7.min.js"></script>
