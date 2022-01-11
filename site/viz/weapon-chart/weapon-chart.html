@@ -35,8 +35,34 @@ Show:
         d3.select('#gameNumber')
           .attr("max",numberOfGames);
 
+        var chart = d3.select("#weapon_chart");
+        //Upload all weapons with display:none
+        weapons.forEach(function(w,index,array){
+          id = w.split(' ').join('_');
+          chart.append("tr")
+               .attr("class","removable")
+               .attr("style","display:none;")
+               .attr("id","tr_"+id).append("td")
+               .attr("width","150")
+               .append("div")
+               .attr("class","weapon-container removable")
+               .append("div")
+               .attr("id","bar_"+id)
+               .attr("class","progress removable")
+               .append("img")
+               .attr("src",weaponPath+w+".png")
+               .attr("id","weapon_"+id);
+      
+          chart.select("#tr_"+id)
+               .append("td")
+               .append("div")
+               .attr("class","removable precision")
+               .attr("id","precision"+id)
+               .text(0+"%");
+        });
         showPlayerGraph();
       });
+
   
     }
 
@@ -48,54 +74,41 @@ Show:
   
 
       //clear graph
-      d3.selectAll(".removable").remove();
+      //d3.selectAll(".removable").remove();
 
-      var chart = d3.select("#weapon_chart");
+      //var chart = d3.select("#weapon_chart");
       weapons.forEach(function(w,index,array){
-
+        id = w.split(' ').join('_');
         var precision = (precision_weapon[w].precision % 1)*100;
         precision = precision.toFixed(2);
         if(precision > 0){
-          chart.append("tr")
-               .attr("class","removable")
-               .attr("id","tr_"+index).append("td")
-                .attr("width","150")
-                .append("div")
-                .attr("class","weapon-container removable")
-                .append("div")
-                .attr("id","bar_"+index)
-                .attr("class","progress removable")
-                .append("img")
-                .attr("src",weaponPath+w+".png")
-                .attr("id","weapon_"+index);
-      
-          chart.select("#tr_"+index)
-               .append("td")
-               .append("div")
-               .attr("class","removable precision")
-               .text(precision+"%");
+          d3.select("#precision"+id)
+              .text(precision+"%");
+          document.getElementById('tr_'+id).style.display = 'block';
 
-          width = $("#weapon_"+index).width() * precision/100;
-          height = $("#weapon_"+index).height();
+
+          width = $("#weapon_"+id).width() * precision/100;
+          height = $("#weapon_"+id).height();
       
           if(width <= 0 && precision > 0){
-            $("#bar_"+index).width(150*precision/100);
+            $("#bar_"+id).width(150*precision/100);
           }else{
-            $("#bar_"+index).width(width);
+            $("#bar_"+id).width(width);
           }
           if(height <= 0){
             /*TODO: bug, it doesn't always work. It seems that images are not always
               displayed immediatly so it happens that the height becomes 0 and they all overlap
             */
-            $("#bar_"+index).height(49); 
+            $("#bar_"+id).height(49); 
           }else{
-            $("#bar_"+index).height(height);
+            $("#bar_"+id).height(height);
           }
+        }else{
+          document.getElementById('tr_'+id).style.display = 'none';
+
         }
 
       });
-
- 
     }
 
 
