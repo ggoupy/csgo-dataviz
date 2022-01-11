@@ -51,6 +51,8 @@ function changeWeapons(precision_weapon){
            .attr("id","tr_"+index).append("td")
             .attr("width","150")
             .append("div")
+            .attr("class","weapon-container removable")
+            .append("div")
             .attr("id","bar_"+index)
             .attr("class","progress removable")
             .append("img")
