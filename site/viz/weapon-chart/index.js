@@ -15,7 +15,7 @@ var weaponPath = "viz/weapon-chart/weapons/"
 function readData(){
   d3.csv(dataPath).then(function(d){
   
-    numberOfGames = d3.max(d, function(d) { return d.Game_number; } );
+    numberOfGames = d3.max(d, function(d) { return parseInt(d.Game_number); } );
     d3.select('#gameNumber')
       .attr("max",numberOfGames);
 
