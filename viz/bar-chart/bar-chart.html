@@ -12,7 +12,7 @@ Comparer les performances d'un joueur avec son 	&eacute;quipe ou avec d'autres j
 <label for="selectPseudoCompare">Compare with : </label>
 <select id="selectPseudoCompare"></select>
 
-<label for="selectProperty">Info : </label>
+<label for="selectProperty">Indicator : </label>
 <select id="selectProperty">
     <option value="dmg" default>Damage inflicted</option>
     <option value="dmg_received">Damage received</option>
@@ -50,7 +50,26 @@ Comparer les performances d'un joueur avec son 	&eacute;quipe ou avec d'autres j
         .append("g")
         .attr("transform",
                 "translate(" + margin.left + "," + margin.top + ")");
-
+			
+	svg.append("text")
+		.attr("class", "xlabel")
+		.attr("text-anchor", "end")
+		.style('fill', '#595959')
+		.attr('font-style', 'italic')
+		.attr("x", width)
+		.attr("y", height - 6)
+		.text("Round");
+		
+	svg.append("text")
+		.attr("class", "ylabel")
+		.attr("text-anchor", "end")
+		.style('fill', '#595959')
+		.attr('font-style', 'italic')
+		.attr("y", 6)
+		.attr("dy", ".75em")
+		.attr("transform", "rotate(-90)")
+		.text("Damage inflicted");
+	
     // Parse the Data
     d3.csv("viz/bar-chart/out.csv").then(function(out) {
         //Axis
@@ -84,7 +103,7 @@ Comparer les performances d'un joueur avec son 	&eacute;quipe ou avec d'autres j
         svg.append("circle").attr("cx",0).attr("cy",height + 50).attr("r", 6).style("fill", bar2Color)
         svg.append("text").attr("class", "legendPlayer").attr("x", 10).attr("y", height + 35).text("LaMasse Damage").style("font-size", "15px").attr("alignment-baseline","middle")
         svg.append("text").attr("class", "legendCompared").attr("x", 10).attr("y", height + 55).text("Mean team Damage").style("font-size", "15px").attr("alignment-baseline","middle")
-
+		
         // create tooltip element  
         const tooltip = d3.select("body")
             .append("div")
@@ -165,7 +184,9 @@ Comparer les performances d'un joueur avec son 	&eacute;quipe ou avec d'autres j
             //Update legend
             svg.selectAll(".legendPlayer").text(document.getElementById("selectPseudo").selectedOptions[0].text + " " + document.getElementById("selectProperty").selectedOptions[0].text);
             svg.selectAll(".legendCompared").text(document.getElementById("selectPseudoCompare").selectedOptions[0].text + " " + document.getElementById("selectProperty").selectedOptions[0].text);
-            data = datag.filter(d => d.Pseudo == pseudo);
+			svg.selectAll(".ylabel")
+				.text(document.getElementById("selectProperty").selectedOptions[0].text);
+			data = datag.filter(d => d.Pseudo == pseudo);
             d3.selectAll("rect").remove(); //Clear graph      
             // Player bars
             svg.selectAll("bar")

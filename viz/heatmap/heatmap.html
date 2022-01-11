@@ -22,6 +22,10 @@ Observer les diff&eacute;rents points d'int&eacute;r&ecirc;ts sur une map en fon
         <option value="3">Team CT</option>
         <option value="4">Everyone</option>
     </select>
+    <select id="typeFloorSelect" onchange="">
+        <option value="1">Upper floor</option>
+        <option value="2">Lower floor</option>
+    </select>
     <br /><br />
     <div id="GameNumberContainer" style="display:none">
         <input
@@ -49,8 +53,9 @@ Observer les diff&eacute;rents points d'int&eacute;r&ecirc;ts sur une map en fon
 
 </div>
 
-<div id="heatmap2">
-    <img src="./viz/heatmap/Nuke.png" id="imgs" style="display:none"></img>
+<div id="heatmap_hidden">
+    <img src="./viz/heatmap/Nuke.png" id="nuke_bg" style="display:none"></img>
+    <img src="./viz/heatmap/Nuke_lower.png" id="nuke_lower_bg" style="display:none"></img>
 </div>
 
 
@@ -195,7 +200,8 @@ Observer les diff&eacute;rents points d'int&eacute;r&ecirc;ts sur une map en fon
         
         context.putImageData(pointImg, 0, 0);
         var bgImg = new Image();
-        bgImg= document.getElementById("imgs");
+        var typeFloorSelect = d3.select("#typeFloorSelect").property("value");
+        bgImg = (typeFloorSelect==1) ? document.getElementById("nuke_bg") : document.getElementById("nuke_lower_bg");
         context.drawImage(bgImg, 0, 0, width, height);
     }
     
@@ -211,6 +217,7 @@ var d=d3.csv("viz/heatmap/positionsAlt.csv").then(d=>{
     $("#sliderGameNumber").attr("max", d3.max(d, function (d) { return parseInt(d.Game_number); }));
 
     function update(d){
+
         //effacer la carte d'abord
         var canvas = d3
         .select("#heatmap")
@@ -257,6 +264,13 @@ var d=d3.csv("viz/heatmap/positionsAlt.csv").then(d=>{
         function ajouterElementDansMap(itemD,tab){
             let x=parseFloat(itemD["X"]);
             let y=parseFloat(itemD["Y"]);
+            let z=parseFloat(itemD["Z"]);
+            //console.log(z);
+            var typeFloorSelect = d3.select("#typeFloorSelect").property("value");
+            var zOrdering = -435; //hardcoded
+            if (typeFloorSelect == 1) //Upper floor
+                zOrdering = z > zOrdering;
+            else zOrdering = z <= zOrdering; //Lower floor
             //x=x+2411.96;
             //y=y+2479.4;
             //x=Math.floor(915-x/7.1+90);
@@ -266,10 +280,13 @@ var d=d3.csv("viz/heatmap/positionsAlt.csv").then(d=>{
             x=Math.floor((x/8+120)*0.8);
             y=Math.floor((487-y/8+255)*0.8);
             let key = x.toString()+","+y.toString();
-            if(tab.has(key)){
-                tab.set(key,tab.get(key)+1);
-            }else{
-                tab.set(key,0);
+            if (zOrdering) 
+            {
+                if(tab.has(key)){
+                    tab.set(key,tab.get(key)+1);
+                }else{
+                    tab.set(key,0);
+                }
             }
             return tab;
         }
@@ -421,6 +438,18 @@ var d=d3.csv("viz/heatmap/positionsAlt.csv").then(d=>{
     document
         .getElementById("sliderRoundNumber")
         .addEventListener("change", function select_update() {
+            update(d);
+        });
+    document
+        .getElementById("typeFloorSelect")
+        .addEventListener("change", function select_update() {
+            var typeFloorSelect = d3.select("#typeFloorSelect").property("value");
+            if (typeFloorSelect==1){
+                $("#imgs").attr("src", "./viz/heatmap/Nuke.png?rand=" + Math.random());
+            }
+            else{
+                $("#imgs").attr("src", "./viz/heatmap/Nuke_lower.png?rand=" + Math.random());
+            }
             update(d);
         });
     
