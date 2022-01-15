@@ -47,10 +47,13 @@ Show:
                .attr("id","tr_"+id).append("td")
                .attr("width","150")
                .append("div")
-               .attr("class","weapon-container removable")
+               .attr("class","background-img")
+               .append("div")
+               .attr("class","weapon-container")
+               .attr("id","weapon_container_"+id)
                .append("div")
                .attr("id","bar_"+id)
-               .attr("class","progress removable")
+               .attr("class","progress")
                .append("img")
                .attr("src",weaponPath+w+".png")
                .attr("id","weapon_"+id);
@@ -58,10 +61,11 @@ Show:
           chart.select("#tr_"+id)
                .append("td")
                .append("div")
-               .attr("class","removable precision")
+               .attr("class","removable")
                .attr("id","precision"+id)
                .text(0+"%");
         });
+
         showPlayerGraph();
       });
 
@@ -87,6 +91,7 @@ Show:
           d3.select("#precision"+id)
               .text(precision+"%");
           document.getElementById('tr_'+id).style.display = 'block';
+          console.log(d3.select("#weapon_"+id).node().getBoundingClientRect().width);
 
 
           width = $("#weapon_"+id).width() * precision/100;
