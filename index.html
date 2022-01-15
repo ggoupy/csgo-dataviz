@@ -45,7 +45,6 @@
         if (item != "Contexte") {
             file = "viz/" + item + '/' + item + '.html'
         }
-        $("#viz-title").text(item.toUpperCase());
         $("#viz").load(file);
      });
 </script>
@@ -71,7 +70,7 @@
                 <div class="u-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle">
                     <div class="u-container-layout u-similar-container u-container-layout-1">
                         <span class="u-file-icon u-icon u-icon-rectangle u-icon-1"><img src="images/624708.png" alt=""></span>
-                        <h4 class="u-text u-text-3"><a class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-palette-1-light-1 u-btn-1" href="?chart=bar-chart">BAR-CHART</a></h4>
+                        <h4 class="u-text u-text-3"><a class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-palette-1-light-1 u-btn-1" href="?chart=bar-chart">GAME STATS</a></h4>
                     </div>
                 </div>
 
@@ -85,14 +84,14 @@
                 <div class="u-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle">
                     <div class="u-container-layout u-similar-container u-container-layout-3">
                         <span class="u-file-icon u-icon u-icon-rectangle u-icon-3"><img src="images/556206.png" alt=""></span>
-                        <h4 class="u-text u-text-3"><a class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-palette-1-light-1 u-btn-1" href="?chart=weapon-chart">WEAPON-CHART</a></h4>
+                        <h4 class="u-text u-text-3"><a class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-palette-1-light-1 u-btn-1" href="?chart=weapon-chart">WEAPON ACCURACY</a></h4>
                     </div>
                 </div>
 
                 <div class="u-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle">
                     <div class="u-container-layout u-similar-container u-container-layout-4">
                         <span class="u-file-icon u-icon u-icon-rectangle u-icon-4"><img src="images/5515734.png" alt=""></span>
-                        <h4 class="u-text u-text-3"><a class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-palette-1-light-1 u-btn-1" href="?chart=accuracy-chart">ACCURACY-CHART</a></h4>
+                        <h4 class="u-text u-text-3"><a class="u-active-none u-border-none u-btn u-button-link u-button-style u-hover-none u-none u-text-palette-1-light-1 u-btn-1" href="?chart=accuracy-chart">SHOOT ACCURACY</a></h4>
                     </div>
                 </div>
             </div>
@@ -127,7 +126,6 @@ c6.177,6.18,9.262,14.271,9.262,22.366C354.708,234.018,351.617,242.115,345.441,24
 
     <section class="u-align-center u-clearfix u-white u-section-1" src="" id="sec-e8fc">
         <div class="u-clearfix u-sheet u-sheet-1">
-           <h3 class="u-text u-text-3" id="viz-title"></h3>
             <div id="viz"></div>
         </div>
     </section>

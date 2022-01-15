@@ -1,17 +1,24 @@
+<h3 class="u-text u-text-3" id="viz-title">SHOOT ACCURACY</h3>
 
 <style>
     .human-body {
     width: 207px;
-    position: relative;
+    position: absolute;
     padding-top: 240px;
     height: 260px;
     display: block;
     margin: 40px auto;
+    top: 250px;
+    left:0;
+    right:0;
+    margin-left:auto;
+    margin-right:auto;
     }
 
     .human-body svg {
     position: absolute;
-    left: 5%;
+    top: 150px;
+    left: 48%;
     }
     .human-body svg.head {
     margin-left: -28.5px;
@@ -57,11 +64,9 @@
     color: black;
     }
 
-
     .pie_graphe {
-    position: relative;
-    top: 0;
-    left: 90%;
+    position: absolute;
+    top: 140px;
     width: 100%;
     height: 100%;
     }
@@ -110,9 +115,8 @@
 
 </div>
 <div id="visu">
-<div id="pie_graphe" style="float: left"></div>
-<div id="body_heatmap" style="float: right">
-    <div class="human-body" id="human">
+<div id="body_heatmap">
+    <div class="human-body" id="human" style="transform: scale(0.6);">
     <svg
         data-position="head"
         class="head"
@@ -206,14 +210,15 @@
     </svg>
     </div>
 </div>
+<div id="pie_graphe" class="pie_graphe"></div>
 </div>
 
 <script>
     //dessiner le pie map
     function drawPieMap(dataset) {
     // higth and weigth
-    var width = 500;
-    var height = 500;
+    var width = 1000;
+    var height = 700;
 
     //creer un pie
     var pie = d3
@@ -227,7 +232,7 @@
     if (no_damage) dataset.push(["no damage",100]) 
     var piedata = pie(dataset);
 
-    var outerRadius = width / 4;
+    var outerRadius = width / 5;
     var innerRadius = width / 6;
 
     var arc = d3.arc().outerRadius(outerRadius).innerRadius(innerRadius);
