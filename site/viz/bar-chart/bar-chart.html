@@ -148,8 +148,10 @@ Comparer les performances d'un joueur avec son 	&eacute;quipe ou avec d'autres j
             const pseudosB = [...new Set(tmp.filter(d => d.Team == "CT").map(d => d.Pseudo))];
             var select = document.getElementById("selectPseudo"); 
             var selectCompare = document.getElementById("selectPseudoCompare"); 
+            
             select.innerHTML = "";
             selectCompare.innerHTML = "<option value='mean'>Mean team</option>";
+
             for(var i = 0; i < pseudosA.length; i++) {
                 var opt = pseudosA[i];
                 select.innerHTML += "<option class='optionA' value=\"" + opt + "\">" + opt + "</option>";
