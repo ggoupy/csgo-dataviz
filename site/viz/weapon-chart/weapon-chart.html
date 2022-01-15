@@ -22,7 +22,7 @@ Show:
     //weapons in output.csv
     var weapons = ["AK-47","AWP","Galil AR","M4A4","SSG 08","USP-S","CZ75 Auto","Glock-18", "MAC-10","P90","Knife","FAMAS", "Desert Eagle",
                   "Smoke Grenade","XM1014","Flashbang", "HE Grenade","AUG", "Dual Berettas","Five-SeveN","G3SG1","P2000","MAG-7","MP5-SD",
-                  "Zeus x27","MP9","Negev","Nova","PP-Bizon","R8-Revolver","Sawed-Off","SG 553","Tec-9","UMP-45"];
+                  "Zeus x27","MP9","Negev","Nova","PP-Bizon","R8-Revolver","Sawed-Off","SG 553","Tec-9","UMP-45","Molotov"];
     var dataPath = "viz/weapon-chart/output.csv";
     var weaponPath = "viz/weapon-chart/weapons/"
 
@@ -91,10 +91,17 @@ Show:
           d3.select("#precision"+id)
               .text(precision+"%");
           document.getElementById('tr_'+id).style.display = 'block';
-          console.log(d3.select("#weapon_"+id).node().getBoundingClientRect().width);
+          var img_width = d3.select("#weapon_"+id).node().getBoundingClientRect().width
+          //just in case some bug during loading might occur
+          if(img_width <= 0){
+            img_width = 150;
+          }
+          d3.select("#weapon_container_"+id)
+            .style("width",img_width+"px");
+          console.log("id: "+ img_width);
 
 
-          width = $("#weapon_"+id).width() * precision/100;
+          width = img_width * precision/100;
           height = $("#weapon_"+id).height();
       
           if(width <= 0 && precision > 0){
