@@ -290,7 +290,7 @@ var d=d3.csv("viz/heatmap/positionsAlt.csv").then(d=>{
             x=x+2911.96;
             y=y+2479.4;
             x=Math.floor((x/8+120)*0.8);
-            y=Math.floor((487/2-y/8+250)*0.8);
+            y=Math.floor((487/2-y/8+0)*0.8);
             let key = x.toString()+","+y.toString()+","+z.toString();
 
             if(tab.has(key)){
