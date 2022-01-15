@@ -106,7 +106,7 @@ Observer les diff&eacute;rents points d'int&eacute;r&ecirc;ts sur une map en fon
     }
     //draw heatmap
     function genereHeatmap(points){
-      var radius = 20;
+      var radius = 20;//mofdifier ancien value est 20
       var width = 800;
       var height = 400;
 
@@ -282,14 +282,15 @@ var d=d3.csv("viz/heatmap/positionsAlt.csv").then(d=>{
             let y=parseFloat(itemD["Y"]);
             let z=parseFloat(itemD["Z"]);
 
-            //x=x+2411.96;
+            //x=x+2911.96;
             //y=y+2479.4;
-            //x=Math.floor(915-x/7.1+90);
-            //y=Math.floor(487-y/7.1+220);
+            //x=Math.floor((x/8+120)*0.8);
+            //y=Math.floor((487-y/8+255)*0.4);
+            //let key = x.toString()+","+y.toString()+","+z.toString();
             x=x+2911.96;
             y=y+2479.4;
-            x=Math.floor((x/8+120)*0.8);
-            y=Math.floor((487-y/8+255)*0.4);
+            x=Math.floor((x/8+130)*0.8);
+            y=Math.floor((487/2-y/8+220)*0.8);
             let key = x.toString()+","+y.toString()+","+z.toString();
 
             if(tab.has(key)){
