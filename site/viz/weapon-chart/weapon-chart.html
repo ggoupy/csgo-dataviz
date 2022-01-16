@@ -47,17 +47,17 @@ Show:
               .attr("id","tr_header")
               .append("th")
               .text("T-Team");
-      /*  d3.select("#tr_header")
-              .append("th")
-              .text("%");*/
         d3.select("#tr_header")
               .append("th")
-              .attr("style","display:none;")
+              .text("%");
+        d3.select("#tr_header")
+              .append("th")
+              //.attr("style","display:none;")
               .text("CT-Team");
 
-      /*        d3.select("#tr_header")
+             d3.select("#tr_header")
               .append("th")
-              .text("%");*/
+              .text("%");
         
         //Upload all weapons with display:none
         weapons.forEach(function(w,index,array){
@@ -92,9 +92,6 @@ Show:
                .append("td")
                .attr("id","ct_weapon"+id)
                .attr("style","display:none")
-               /*.attr("class","removable")
-               .attr("style","display:block;")
-               .attr("id","tr2_"+id).append("td")*/
                .attr("width","150")
                .append("div")
                .attr("class","background-img")
