@@ -94,21 +94,22 @@ Show:
           var img_width = d3.select("#weapon_"+id).node().getBoundingClientRect().width
           //just in case some bug during loading might occur
           if(img_width <= 0){
+            console.log("something went wrong here");
             img_width = 150;
           }
           d3.select("#weapon_container_"+id)
             .style("width",img_width+"px");
-          console.log("id: "+ img_width);
 
 
           width = img_width * precision/100;
           height = $("#weapon_"+id).height();
       
           if(width <= 0 && precision > 0){
+            console.log("something went wrong also here");
             $("#bar_"+id).width(150*precision/100);
           }else{
             $("#bar_"+id).width(width);
-          }
+          } 
           if(height <= 0){
             /*TODO: bug, it doesn't always work. It seems that images are not always
               displayed immediatly so it happens that the height becomes 0 and they all overlap
