@@ -8,12 +8,16 @@ Show:
 <select id="playerName" onchange="showPlayerGraph()">
     <option value="LaMasse">Player "LaMasse"</option>
     <option value="everyone">Everyone</option>
+    <option value="T VS CT">T vs CT</option>
 </select>
 <div id="divSlider" class="slidecontainer">
     <input type="range" min="1" max="25" value="1" class="slider" id="gameNumber" onchange="showPlayerGraph()">
     Game number <span id="displayedGameNumber"></span>
 </div>
-<table id="weapon_chart" cellspacing="0" cellpadding="0" style="margin-left:auto;margin-right:auto;"></table>
+<table id="weapon_chart"style="margin-left:auto;margin-right:auto;">
+
+
+</table>
 
 
 <script>
@@ -38,31 +42,79 @@ Show:
           .attr("max",numberOfGames);
 
         var chart = d3.select("#weapon_chart");
+        chart.append("tr")
+              .attr("style","display:none;")
+              .attr("id","tr_header")
+              .append("th")
+              .text("T-Team");
+      /*  d3.select("#tr_header")
+              .append("th")
+              .text("%");*/
+        d3.select("#tr_header")
+              .append("th")
+              .attr("style","display:none;")
+              .text("CT-Team");
+
+      /*        d3.select("#tr_header")
+              .append("th")
+              .text("%");*/
+        
         //Upload all weapons with display:none
         weapons.forEach(function(w,index,array){
           id = w.split(' ').join('_');
           chart.append("tr")
                .attr("class","removable")
                .attr("style","display:none;")
-               .attr("id","tr_"+id).append("td")
-               .attr("width","150")
-               .append("div")
-               .attr("class","background-img")
-               .append("div")
-               .attr("class","weapon-container")
-               .attr("id","weapon_container_"+id)
-               .append("div")
-               .attr("id","bar_"+id)
-               .attr("class","progress")
-               .append("img")
-               .attr("src",weaponPath+w+".png")
-               .attr("id","weapon_"+id);
+               .attr("id","tr_"+id)
+               .append("td")
+                  .attr("width","150")
+                  .append("div")
+                  .attr("class","background-img")
+                  .append("div")
+                  .attr("class","weapon-container")
+                  .attr("id","weapon_container_"+id)
+                  .append("div")
+                  .attr("id","bar_"+id)
+                  .attr("class","progress")
+                  .append("img")
+                  .attr("src",weaponPath+w+".png")
+                  .attr("id","weapon_"+id);
       
+    
           chart.select("#tr_"+id)
                .append("td")
                .append("div")
                .attr("class","removable")
                .attr("id","precision"+id)
+               .text(0+"%");
+          //CT STUFF
+          d3.select("#tr_"+id)
+               .append("td")
+               .attr("id","ct_weapon"+id)
+               .attr("style","display:none")
+               /*.attr("class","removable")
+               .attr("style","display:block;")
+               .attr("id","tr2_"+id).append("td")*/
+               .attr("width","150")
+               .append("div")
+               .attr("class","background-img")
+               .append("div")
+               .attr("class","weapon-container")
+               .attr("id","weapon_container2_"+id)
+               .append("div")
+               .attr("id","bar2_"+id)
+               .attr("class","progress")
+               .attr("style","background-color:rgb(99, 66, 245);")
+               .append("img")
+               .attr("src",weaponPath+w+".png")
+               .attr("id","weapon2_"+id); 
+            
+          chart.select("#tr_"+id)
+               .append("td")
+               .append("div")
+               .attr("style","display:none;")
+               .attr("class","removable")
+               .attr("id","precision2"+id)
                .text(0+"%");
         });
 
@@ -76,40 +128,53 @@ Show:
     /*Change the weapon displayed on the graph
     * precision_weapon: is a list of weapons and precision
     */
-    function changeWeapons(precision_weapon){
+    function changeWeapons(precision_weapon, Is_TvsCT = false){
   
 
       //clear graph
-      //d3.selectAll(".removable").remove();
-
-      //var chart = d3.select("#weapon_chart");
-      weapons.forEach(function(w,index,array){
+      if(!Is_TvsCT){
+        console.log("Display normale");
+        d3.select("#tr_header")
+            .attr("style","display:none");
+        weapons.forEach(function(w,index,array){
         id = w.split(' ').join('_');
         var precision = (precision_weapon[w].precision % 1)*100;
         precision = precision.toFixed(2);
+        document.getElementById('precision2'+id).style.display = 'none';
+          document.getElementById('ct_weapon'+id).style.display = 'none';
         if(precision > 0){
+          //console.log("ID: "+id);
+
+          //console.log("precision > 0: " +precision);
           d3.select("#precision"+id)
               .text(precision+"%");
           document.getElementById('tr_'+id).style.display = 'block';
-          var img_width = d3.select("#weapon_"+id).node().getBoundingClientRect().width
+
+
+          var img_width = d3.select("#weapon_"+id).node().getBoundingClientRect().width;
           //just in case some bug during loading might occur
-          if(img_width <= 0){
-            console.log("something went wrong here");
-            img_width = 150;
-          }
-          d3.select("#weapon_container_"+id)
-            .style("width",img_width+"px");
-
-
           width = img_width * precision/100;
-          height = $("#weapon_"+id).height();
-      
-          if(width <= 0 && precision > 0){
-            console.log("something went wrong also here");
-            $("#bar_"+id).width(150*precision/100);
+
+
+          if(img_width <= 0){
+            console.log("id: "+id + " img_width: "+img_width);
+            console.log("width:" + $("#weapon_"+id).width() + " weapon: "+w);
+            //image not yet loaded is better to sleep a bit
+            path = weaponPath+w+".png";
+            new_img_width = ImageInfo(path);
+            console.log("new img width: "+new_img_width);
           }else{
-            $("#bar_"+id).width(width);
-          } 
+            d3.select("#weapon_container_"+id)
+              .style("width",img_width+"px");
+              d3.select("#bar_"+id)
+                .style("width",width+"px");
+
+          }
+
+
+
+          height = $("#weapon_"+id).height();
+
           if(height <= 0){
             /*TODO: bug, it doesn't always work. It seems that images are not always
               displayed immediatly so it happens that the height becomes 0 and they all overlap
@@ -118,12 +183,91 @@ Show:
           }else{
             $("#bar_"+id).height(height);
           }
+
         }else{
           document.getElementById('tr_'+id).style.display = 'none';
 
         }
 
       });
+
+      }else{  //IT IS T VS CT
+          console.log("display T VS CT")
+          d3.select("#tr_header")
+            .attr("style","display:block");
+        
+
+          weapons.forEach(function(w,index,array){
+          id = w.split(' ').join('_');
+          var precision_T = (precision_weapon[w].precision_T % 1)*100;
+              precision_T  = precision_T.toFixed(2);
+          var precision_CT = (precision_weapon[w].precision_CT % 1)*100;
+              precision_CT  = precision_CT.toFixed(2);
+          
+          
+          if(precision_T > 0 || precision_CT > 0){
+            
+            if(isNaN(precision_T)){
+              precision_T = 0;
+            }
+            if(isNaN(precision_CT)){
+              precision_CT = 0 ;
+            }
+            d3.select("#precision"+id)
+              .text(precision_T+"%");
+            d3.select("#precision2"+id)
+              .text(precision_CT+"%");
+           
+            document.getElementById('tr_'+id).style.display = 'block';
+            document.getElementById('precision2'+id).style.display = 'block';
+            document.getElementById('ct_weapon'+id).style.display = 'block';
+            var img_width = d3.select("#weapon_"+id).node().getBoundingClientRect().width;
+            //just in case some bug during loading might occur
+            width = img_width * precision_T/100;
+            width2 = img_width * precision_CT/100;
+
+            if(img_width <= 0){
+              console.log("id: "+id + " img_width: "+img_width);
+              console.log("width:" + $("#weapon_"+id).width() + " weapon: "+w);
+              path = weaponPath+w+".png";
+              new_img_width = ImageInfo(path);
+
+            }else{
+              d3.select("#weapon_container_"+id)
+                .style("width",img_width+"px");
+              d3.select("#bar_"+id)
+                  .style("width",width+"px");
+              
+              d3.select("#weapon_container2_"+id)
+                .style("width",img_width+"px");
+              d3.select("#bar2_"+id)
+                  .style("width",width2+"px");
+              //$("#bar_"+id).width(width);
+            // console.log("id: "+ id +" width: "+ $("#bar_"+id).width());
+            }
+
+
+
+            height = $("#weapon_"+id).height();
+  
+            if(height <= 0){
+              /*TODO: bug, it doesn't always work. It seems that images are not always
+                displayed immediatly so it happens that the height becomes 0 and they all overlap
+              */
+              $("#bar_"+id).height(49); 
+            }else{
+              $("#bar_"+id).height(height);
+            }
+
+          }else{
+            document.getElementById('tr_'+id).style.display = 'none';
+
+          }
+
+        });
+
+      }
+   
     }
 
 
@@ -135,11 +279,11 @@ Show:
       playerToShow = $("#playerName").val();
       $("#displayedGameNumber").text(gameNumber);
 
-      if(playerToShow === "everyone"){
-        document.getElementById('divSlider').style.display = 'none';
+      if(playerToShow === "LaMasse" ){
+        document.getElementById('divSlider').style.display = 'block';
 
       }else{
-        document.getElementById('divSlider').style.display = 'block';
+        document.getElementById('divSlider').style.display = 'none';
 
       }
   
@@ -147,13 +291,14 @@ Show:
       fired = {};
       hit   = {};
       weapons.forEach(function(w){
-        precision_weapon[w] = {'precision': 0,'hit':0,'fired':0};
+        precision_weapon[w] = {'precision': 0,'hit':0,'fired':0,'fired_T':0,'fired_CT':0,'hit_T':0,'hit_CT':0};
       });
 
       d3.csv(dataPath).then(function(d){
-
+          var Is_TvsCT = false;
           //Count the fired and hit shots for a given game
-          if(playerToShow === "LaMasse"){
+          if(playerToShow
+           === "LaMasse"){
             for(var i = 0; i < d.length; i++){
               if(d[i].Game_number === gameNumber && d[i].Pseudo === playerToShow){
                   weapons.forEach(function(weapon){
@@ -162,11 +307,25 @@ Show:
                 });
               }
             }
-          }else{
+          }else if(playerToShow === "everyone"){
             for(var i = 0; i < d.length; i++){
               weapons.forEach(function(weapon){
                   precision_weapon[weapon].fired += Math.floor(d[i]["shots_fired_"+weapon]);
                   precision_weapon[weapon].hit += Math.floor(d[i]["shots_hit_"+weapon]);
+              });      
+            }
+          }else{  //T vs CT case
+            Is_TvsCT = true;
+            for(var i = 0; i < d.length; i++){
+              weapons.forEach(function(weapon){
+                if(d[i].Team === "CT"){
+                  precision_weapon[weapon].fired_CT += Math.floor(d[i]["shots_fired_"+weapon]);
+                  precision_weapon[weapon].hit_CT += Math.floor(d[i]["shots_hit_"+weapon]);
+                }else{
+                  precision_weapon[weapon].fired_T += Math.floor(d[i]["shots_fired_"+weapon]);
+                  precision_weapon[weapon].hit_T += Math.floor(d[i]["shots_hit_"+weapon]);
+                }
+
               });      
             }
           }
@@ -174,16 +333,36 @@ Show:
 
 
           weapons.forEach(function(w){
-            if(precision_weapon[w].fired > 0){
-              precision_weapon[w].precision = precision_weapon[w].hit/precision_weapon[w].fired;
+            if(Is_TvsCT){
+              if(precision_weapon[w].fired_CT > 0 ){
+
+                precision_weapon[w].precision_CT = precision_weapon[w].hit_CT/precision_weapon[w].fired_CT;
+              }
+              if(precision_weapon[w].fired_T>0){
+                precision_weapon[w].precision_T = precision_weapon[w].hit_T/precision_weapon[w].fired_T;
+              }
+            }else{
+              if(precision_weapon[w].fired > 0){
+                precision_weapon[w].precision = precision_weapon[w].hit/precision_weapon[w].fired;
+              }
             }
+            
+            
           });
 
-          changeWeapons(precision_weapon);
+          changeWeapons(precision_weapon, Is_TvsCT);
       });
 
     }
 
-    readData();
+    //function sleep to use when pictures are not yet loaded and the dynamic stuff needs them
+    function ImageInfo(path, onLoad) {
+      var img = new Image();
+      img.onload = function() {
+        return img.width;
+      }
+      img.src = path;
 
+    }
+    readData();
 </script>
