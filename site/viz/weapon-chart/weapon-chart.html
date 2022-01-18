@@ -14,7 +14,7 @@ Show:
     <input type="range" min="1" max="25" value="1" class="slider" id="gameNumber" onchange="showPlayerGraph()">
     Game number <span id="displayedGameNumber"></span>
 </div>
-<table id="weapon_chart"style="margin-left:auto;margin-right:auto;">
+<table id="weapon_chart" style="margin-left:auto;margin-right:auto;">
 
 
 </table>
@@ -43,28 +43,30 @@ Show:
 
         var chart = d3.select("#weapon_chart");
         chart.append("tr")
-              .attr("style","display:none;")
+              .attr("style","display:none; text-align:center;")
               .attr("id","tr_header")
+              .attr("colspan","4")
               .append("th")
-              .text("T-Team");
-        d3.select("#tr_header")
+              .text("T-Team vs CT-Team");
+              
+        /*d3.select("#tr_header")
               .append("th")
-              .text("%");
-        d3.select("#tr_header")
+              .text("%");*/
+        /*d3.select("#tr_header")
               .append("th")
               //.attr("style","display:none;")
-              .text("CT-Team");
+              .text("CT-Team");*/
 
-             d3.select("#tr_header")
+        /*d3.select("#tr_header")
               .append("th")
-              .text("%");
+              .text("%");*/
         
         //Upload all weapons with display:none
         weapons.forEach(function(w,index,array){
           id = w.split(' ').join('_');
           chart.append("tr")
                .attr("class","removable")
-               .attr("style","display:none;")
+               //.attr("style","display:none;")
                .attr("id","tr_"+id)
                .append("td")
                   .attr("width","150")
@@ -88,10 +90,12 @@ Show:
                .attr("id","precision"+id)
                .text(0+"%");
           //CT STUFF
+          //chart
           d3.select("#tr_"+id)
                .append("td")
                .attr("id","ct_weapon"+id)
-               .attr("style","display:none")
+               .attr("style","display:td")
+               //.attr("style","float:right")
                .attr("width","150")
                .append("div")
                .attr("class","background-img")
@@ -105,11 +109,11 @@ Show:
                .append("img")
                .attr("src",weaponPath+w+".png")
                .attr("id","weapon2_"+id); 
-            
+          //chart  
           chart.select("#tr_"+id)
                .append("td")
                .append("div")
-               .attr("style","display:none;")
+               .attr("style","display:td;")
                .attr("class","removable")
                .attr("id","precision2"+id)
                .text(0+"%");
@@ -138,7 +142,7 @@ Show:
         var precision = (precision_weapon[w].precision % 1)*100;
         precision = precision.toFixed(2);
         document.getElementById('precision2'+id).style.display = 'none';
-          document.getElementById('ct_weapon'+id).style.display = 'none';
+        document.getElementById('ct_weapon'+id).style.display = 'none';
         if(precision > 0){
           //console.log("ID: "+id);
 
@@ -158,8 +162,10 @@ Show:
             console.log("width:" + $("#weapon_"+id).width() + " weapon: "+w);
             //image not yet loaded is better to sleep a bit
             path = weaponPath+w+".png";
-            new_img_width = ImageInfo(path);
-            console.log("new img width: "+new_img_width);
+            d3.select("#bar_"+id)
+                .style("width",10+"px");
+            //new_img_width = ImageInfo(path);
+           // console.log("new img width: "+new_img_width);
           }else{
             d3.select("#weapon_container_"+id)
               .style("width",img_width+"px");
@@ -216,8 +222,10 @@ Show:
               .text(precision_CT+"%");
            
             document.getElementById('tr_'+id).style.display = 'block';
-            document.getElementById('precision2'+id).style.display = 'block';
-            document.getElementById('ct_weapon'+id).style.display = 'block';
+            
+            document.getElementById('precision2'+id).style.display = "table-cell";
+            document.getElementById('ct_weapon'+id).style.display = "table-cell";
+            
             var img_width = d3.select("#weapon_"+id).node().getBoundingClientRect().width;
             //just in case some bug during loading might occur
             width = img_width * precision_T/100;
@@ -238,7 +246,8 @@ Show:
               d3.select("#weapon_container2_"+id)
                 .style("width",img_width+"px");
               d3.select("#bar2_"+id)
-                  .style("width",width2+"px");
+                  .style("width",width2+"px")
+                  .style("height","49px");
               //$("#bar_"+id).width(width);
             // console.log("id: "+ id +" width: "+ $("#bar_"+id).width());
             }
