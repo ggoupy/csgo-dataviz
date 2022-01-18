@@ -14,6 +14,7 @@ Show:
     <input type="range" min="1" max="25" value="1" class="slider" id="gameNumber" onchange="showPlayerGraph()">
     Game number <span id="displayedGameNumber"></span>
 </div>
+<div id="tr_header" style="text-align: center;"><b>T VS CT</b></div>
 <table id="weapon_chart" style="margin-left:auto;margin-right:auto;">
 
 
@@ -42,12 +43,12 @@ Show:
           .attr("max",numberOfGames);
 
         var chart = d3.select("#weapon_chart");
-        chart.append("tr")
+       /* chart.append("tr")
               .attr("style","display:none; text-align:center;")
               .attr("id","tr_header")
               .attr("colspan","4")
               .append("th")
-              .text("T-Team vs CT-Team");
+              .text("T-Team vs CT-Team");*/
               
         /*d3.select("#tr_header")
               .append("th")
